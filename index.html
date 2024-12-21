@@ -1,81 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scrolling Logos and Fading Text</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to bottom, #000000, #00232D);
-            color: white;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scrolling Logos and Text Animation</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0c141a;
+      color: white;
+      overflow-x: hidden;
+    }
 
-        .container {
-            position: relative;
-            height: 150vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .container {
+      position: relative;
+      height: 200vh; /* Longer height for scroll */
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
 
-        .text {
-            font-size: 2.5rem;
-            text-align: center;
-            opacity: 0;
-            animation: fadeIn 2s ease-out forwards;
-        }
+    .text {
+      font-size: 2em;
+      text-align: center;
+      margin-bottom: 100px;
+      opacity: 0;
+    }
 
-        .logos {
-            position: fixed;
-            bottom: 10%;
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            animation: scrollUp 15s linear infinite;
-        }
+    /* Animation for the text appearing letter by letter */
+    .text span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+    }
 
-        .logos img {
-            height: 50px;
-            margin: 0 20px;
-        }
+    .text.animate span {
+      animation: fadeInUp 0.5s ease forwards;
+    }
 
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .logos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-evenly;
+      gap: 30px;
+      position: fixed;
+      bottom: -100px;
+      animation: scrollUp 10s linear infinite;
+    }
 
-        @keyframes scrollUp {
-            0% {
-                transform: translateY(100%);
-            }
-            100% {
-                transform: translateY(-100%);
-            }
-        }
-    </style>
+    .logos img {
+      width: 100px;
+      height: auto;
+    }
+
+    /* Keyframes for scrolling up */
+    @keyframes scrollUp {
+      0% {
+        transform: translateY(100%);
+      }
+      100% {
+        transform: translateY(-200%);
+      }
+    }
+
+    /* Fade in each letter */
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="text">
-            Almost 1M employers with opportunities to land that first, second, and third job
-        </div>
+  <div class="container">
+    <div class="text" id="animatedText">
+      <span>A</span><span>l</span><span>m</span><span>o</span><span>s</span><span>t</span>
+      <span>1</span><span>M</span><span> </span><span>e</span><span>m</span><span>p</span>
+      <span>l</span><span>o</span><span>y</span><span>e</span><span>r</span><span>s</span>
+      <span> </span><span>w</span><span>i</span><span>t</span><span>h</span>
+      <span> </span><span>o</span><span>p</span><span>p</span><span>o</span><span>r</span>
+      <span>t</span><span>u</span><span>n</span><span>i</span><span>t</span><span>i</span>
+      <span>e</span><span>s</span><span> </span><span>t</span><span>o</span>
+      <span> </span><span>l</span><span>a</span><span>n</span><span>d</span><span> </span>
+      <span>t</span><span>h</span><span>a</span><span>t</span><span> </span><span>f</span>
+      <span>i</span><span>r</span><span>s</span><span>t</span><span>,</span>
+      <span>s</span><span>e</span><span>c</span><span>o</span><span>n</span><span>d</span>
+      <span>,</span><span> </span><span>a</span><span>n</span><span>d</span>
+      <span>t</span><span>h</span><span>i</span><span>r</span><span>d</span>
+      <span>j</span><span>o</span><span>b</span>.
     </div>
-
     <div class="logos">
-        <img src="https://chemistry.mit.edu/wp-content/uploads/2019/11/mit-chemistry-logo.png" alt="MIT Chemistry">
-        <img src="https://engineering.mit.edu/wp-content/themes/mit-theme/assets/img/mit-logo.svg" alt="MIT School of Engineering">
-        <img src="https://helpingh.org/wp-content/uploads/2023/03/HelpingHandsLogo.png" alt="Helping Hands Corporation">
-        <img src="https://www.asu.edu/branding/images/asu_logo_white.png" alt="ASU">
+      <img src="https://chemistry.mit.edu/wp-content/uploads/2020/01/chemistry_logo-2x.png" alt="MIT Dept of Chemistry">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/MIT_logo.svg" alt="MIT School of Engineering">
+      <img src="https://helpingh.org/assets/logo.png" alt="Helping Hands">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bb/Arizona_State_University_seal.svg/1200px-Arizona_State_University_seal.svg.png" alt="ASU">
     </div>
+  </div>
+
+  <script>
+    // Animate the text as you scroll
+    const text = document.getElementById('animatedText');
+    const spans = text.querySelectorAll('span');
+
+    window.addEventListener('scroll', () => {
+      const scrollPosition = window.scrollY;
+      const textPosition = text.offsetTop;
+
+      if (scrollPosition > textPosition - window.innerHeight + 100) {
+        spans.forEach((span, index) => {
+          setTimeout(() => {
+            span.style.opacity = '1';
+            span.style.transform = 'translateY(0)';
+          }, index * 50); // Delay each letter's animation
+        });
+        text.classList.add('animate');
+      }
+    });
+  </script>
 </body>
 </html>
