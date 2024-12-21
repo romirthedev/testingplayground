@@ -3,19 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testing Playground</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Scroll Reveal Text</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: grey;
+            height: 300vh; /* Make the page tall for scrolling */
+            overflow-x: hidden;
+        }
+
+        .reveal-text {
+            font-size: 2rem;
+            line-height: 1.5;
+            letter-spacing: 0.1em;
+            color: grey;
+            opacity: 0.1;
+            white-space: pre-wrap;
+        }
+
+        .container {
+            position: fixed;
+            top: 20%;
+            left: 5%;
+            width: 90%;
+        }
+
+        .char {
+            color: grey;
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <div class="text-container">
-            <p id="text"></p>
-        </div>
-        <div class="logo-container">
-            <!-- Logos will be generated dynamically -->
-        </div>
-        <div class="blank-space"></div>
+        <p class="reveal-text" id="text">Subtle grey text slowly becoming visible to create an engaging and delightful scrolling experience.</p>
     </div>
-    <script src="scripts.js"></script>
+
+    <script>
+        const revealText = document.getElementById('text');
+        const letters = Array.from(revealText.textContent).map(char => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.classList.add('char');
+            return span;
+        });
+
+        revealText.textContent = '';
+        letters.forEach(letter => revealText.appendChild(letter));
+
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY; // Get how much the user has scrolled
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+
+            const scrollPercent = scrollPosition / (documentHeight - windowHeight); // Normalized scroll percentage
+
+            letters.forEach((letter, index) => {
+                const revealThreshold = index / letters.length;
+                if (scrollPercent > revealThreshold) {
+                    letter.style.color = 'white';
+                    letter.style.opacity = '1';
+                } else {
+                    letter.style.color = 'grey';
+                    letter.style.opacity = '0.1';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
