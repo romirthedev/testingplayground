@@ -1,155 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Handshake Replica</title>
-  <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      overflow-x: hidden;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-
-    .section {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-
-    /* Text Animation */
-    .text {
-      font-size: 2.5rem;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .text span {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInLetter 0.05s ease forwards;
-    }
-
-    .text.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @keyframes fadeInLetter {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Scrolling Logos */
-    .logos-container {
-      position: relative;
-      overflow: hidden;
-      height: 250px;
-      background-color: #fff;
-      margin: 50px 0;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .logos {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: scrollUp 6s linear infinite;
-    }
-
-    .logos img {
-      width: 150px;
-      margin: 10px 0;
-    }
-
-    @keyframes scrollUp {
-      0% {
-        transform: translateY(0);
-      }
-      100% {
-        transform: translateY(-100%);
-      }
-    }
-
-    /* Duplicate Logos */
-    .logos.duplicate {
-      position: absolute;
-      top: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Section 1 -->
-  <div class="section">
-    <div class="text" id="text1">Explore jobs and internships that match your career goals.</div>
-  </div>
-
-  <!-- Scrolling Logos Section -->
-  <div class="logos-container">
-    <div class="logos" id="logos1">
-      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bb/Arizona_State_University_seal.svg/1200px-Arizona_State_University_seal.svg.png" alt="ASU">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/MIT_logo.svg" alt="MIT">
-      <img src="https://chemistry.mit.edu/wp-content/uploads/2020/01/chemistry_logo-2x.png" alt="MIT Chemistry">
-      <img src="https://helpingh.org/assets/logo.png" alt="Helping Hands">
+    <div class="container">
+        <div class="text-container">
+            <p id="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.</p>
+        </div>
+        <div class="logo-container">
+            <!-- Logos will be generated dynamically -->
+        </div>
     </div>
-    <div class="logos duplicate" id="logos2">
-      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bb/Arizona_State_University_seal.svg/1200px-Arizona_State_University_seal.svg.png" alt="ASU">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/MIT_logo.svg" alt="MIT">
-      <img src="https://chemistry.mit.edu/wp-content/uploads/2020/01/chemistry_logo-2x.png" alt="MIT Chemistry">
-      <img src="https://helpingh.org/assets/logo.png" alt="Helping Hands">
-    </div>
-  </div>
-
-  <!-- Section 2 -->
-  <div class="section">
-    <div class="text" id="text2">Join top employers and get started on your future.</div>
-  </div>
-
-  <script>
-    // Letter-by-letter text animation
-    document.querySelectorAll('.text').forEach((textEl) => {
-      const textContent = textEl.textContent;
-      textEl.textContent = ''; // Clear the original text
-      textContent.split('').forEach((letter, index) => {
-        const span = document.createElement('span');
-        span.textContent = letter;
-        span.style.animationDelay = `${index * 0.05}s`;
-        textEl.appendChild(span);
-      });
-    });
-
-    // Intersection Observer for fade-in text
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    document.querySelectorAll('.text').forEach((text) => observer.observe(text));
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
