@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrolling Logos and Fading Text</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #000000, #00232D);
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: relative;
+            height: 150vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .text {
+            font-size: 2.5rem;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards;
+        }
+
+        .logos {
+            position: fixed;
+            bottom: 10%;
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            animation: scrollUp 15s linear infinite;
+        }
+
+        .logos img {
+            height: 50px;
+            margin: 0 20px;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scrollUp {
+            0% {
+                transform: translateY(100%);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text">
+            Almost 1M employers with opportunities to land that first, second, and third job
+        </div>
+    </div>
+
+    <div class="logos">
+        <img src="https://chemistry.mit.edu/wp-content/uploads/2019/11/mit-chemistry-logo.png" alt="MIT Chemistry">
+        <img src="https://engineering.mit.edu/wp-content/themes/mit-theme/assets/img/mit-logo.svg" alt="MIT School of Engineering">
+        <img src="https://helpingh.org/wp-content/uploads/2023/03/HelpingHandsLogo.png" alt="Helping Hands Corporation">
+        <img src="https://www.asu.edu/branding/images/asu_logo_white.png" alt="ASU">
+    </div>
+</body>
+</html>
