@@ -184,7 +184,7 @@
 </html>
 -->
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -359,13 +359,14 @@
 </body>
 </html>
 
-
-<!-- <!DOCTYPE html>
+-->
+ 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Experience Timeline</title>
+    <title>Letter-by-Letter Reveal</title>
     <style>
         body {
             margin: 0;
@@ -373,89 +374,9 @@
             font-family: Arial, sans-serif;
             background-color: black;
             color: grey;
+            height: 300vh; /* Simulated site height */
             overflow-x: hidden;
-            overflow-y: auto; /* Allow vertical scrolling after text is fully revealed */
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: white;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .timeline-container {
-            display: flex;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 2rem 1rem;
-            gap: 2rem;
-            margin-top: 5rem; /* Ensure there's space above the timeline */
-        }
-
-        .timeline-card {
-            flex: 0 0 300px;
-            background: #1a1a1a;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            padding: 1.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .timeline-card.work {
-            border-left: 5px solid #00d1ff;
-        }
-
-        .timeline-card.education {
-            border-left: 5px solid #ff8000;
-        }
-
-        .timeline-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
-        }
-
-        .timeline-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #00d1ff, #0072ff);
-        }
-
-        .timeline-card h3 {
-            color: white;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .timeline-card p {
-            color: grey;
-            font-size: 1rem;
-            line-height: 1.5;
-        }
-
-        .timeline-card span {
-            display: block;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: #00d1ff;
-        }
-
-        .horizontal-scroll-hint {
-            text-align: center;
-            color: grey;
-            margin: 1rem 0;
-        }
-
-        .timeline-section {
-            margin: 4rem 0;
-            padding-top: 100vh; /* Pushes the timeline section down */
+            overflow-y: hidden; /* Disable vertical scrolling */
         }
 
         .container {
@@ -464,7 +385,7 @@
             left: 5%;
             width: 90%;
             z-index: 2;
-            pointer-events: none;
+            pointer-events: none; /* Disable interaction with text */
         }
 
         .reveal-text {
@@ -477,7 +398,7 @@
 
         .char {
             color: grey;
-            opacity: 0.2;
+            opacity: 0.2; /* Default opacity for unrevealed letters */
             transition: color 0.3s ease, opacity 0.3s ease;
         }
 
@@ -489,12 +410,10 @@
             height: 100%;
             z-index: 1;
         }
-
     </style>
 </head>
 <body>
-    <!-- Letter-by-Letter Reveal Section -->
-  <!--  <div class="container">
+    <div class="container">
         <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
     </div>
 
@@ -512,31 +431,38 @@
         revealText.textContent = '';
         letters.forEach(letter => revealText.appendChild(letter));
 
-        let virtualScroll = 0;
+        let virtualScroll = 0; // Tracks letter reveal progress
         let totalLetters = letters.length;
 
+        let isTextRevealed = false;
+
+        // Disable natural scroll until text is fully revealed
         window.addEventListener('wheel', (e) => {
-            const delta = e.deltaY > 0 ? 5 : -5; 
-            virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); 
+            if (!isTextRevealed) {
+                e.preventDefault();  // Prevent scrolling if text is not fully revealed
+            }
+
+            const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
+            virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
 
             letters.forEach((letter, index) => {
                 if (index < virtualScroll) {
-                    letter.style.color = '#ffffff'; 
-                    letter.style.opacity = '1';     
+                    letter.style.color = '#ffffff'; // Reveal letter
+                    letter.style.opacity = '1';     // Full opacity
                 } else {
-                    letter.style.color = 'grey';   
-                    letter.style.opacity = '0.2';  
+                    letter.style.color = 'grey';   // Default color
+                    letter.style.opacity = '0.2';  // Faint visibility
                 }
             });
 
-            // Once all letters are revealed, allow page scrolling naturally
+            // Check if all letters are revealed
             if (virtualScroll === totalLetters) {
-                document.body.style.overflowY = 'auto'; // Enable vertical scrolling
-            } else {
-                e.preventDefault(); // Prevent scrolling during text reveal
+                isTextRevealed = true;
+                document.body.style.overflowY = 'auto'; // Allow scrolling after text is fully revealed
             }
         });
 
+        // Particle background script
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         
@@ -560,6 +486,7 @@
                 this.x += this.speedX;
                 this.y += this.speedY;
 
+                // Wrap around edges
                 if (this.x > canvas.width) this.x = 0;
                 if (this.x < 0) this.x = canvas.width;
                 if (this.y > canvas.height) this.y = 0;
@@ -620,31 +547,5 @@
             init();
         });
     </script>
-
-    <!-- Timeline Section -->
-  <!--  <section class="timeline-section">
-        <h2 class="section-title">My Work History & Educational Background</h2>
-        <p class="horizontal-scroll-hint">Scroll horizontally to explore</p>
-        <div class="timeline-container">
-            <!-- Work Cards -->
-            <!-- <div class="timeline-card work">
-                <h3>Massachusetts Institute of Technology (MIT)</h3>
-                <p><strong>Role:</strong> Artificial Intelligence and Machine Learning Researcher</p>
-                <p><strong>Highlights:</strong> Advanced research on Bayesian inference, AI, and ML techniques in the Department of Electrical Engineering.</p>
-                <span>2023 – Present</span>
-            </div>
-
-            <!-- Education Cards -->
-        <!--    <div class="timeline-card education">
-                <h3>Arizona State University (ASU)</h3>
-                <p><strong>Degree:</strong> B.S. in Computer Science and Engineering</p>
-                <p><strong>Highlights:</strong> Research in motion capture, CRISPR, and computational modeling. Assisted in major projects with Professor Tejaswi Gowda and Dr. Brian Braatz.</p>
-                <span>2022 – Present</span>
-            </div>
-
-            <!-- More timeline cards go here -->
- <!--       </div>
-    </section>
 </body>
 </html>
--->
