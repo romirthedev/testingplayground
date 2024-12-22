@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
             this.size = Math.random() * 5 + 1; // Set initial size
-            this.speedX = Math.random() * 3 - 1.5;
-            this.speedY = Math.random() * 3 - 1.5;
+            this.speedX = Math.random() * 0.5 - 0.25; // Slower horizontal speed
+            this.speedY = Math.random() * 0.5 - 0.25; // Slower vertical speed
             this.color = colors[Math.floor(Math.random() * colors.length)];
         }
 
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function init() {
         particles = [];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 200; i++) { // Increase number of particles
             particles.push(new Particle());
         }
     }
