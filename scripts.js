@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
             particles[i].update();
             particles[i].draw();
 
-            for (let j = i; j < particles.length; j++) {
+            for (let j = i + 1; j < particles.length; j++) {
                 const dx = particles[i].x - particles[j].x;
                 const dy = particles[i].y - particles[j].y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
