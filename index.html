@@ -184,7 +184,7 @@
 </html>
 -->
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -274,7 +274,7 @@
         // Particle background script
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-
+        
         let particles = [];
         const colors = ['#ffffff', '#aaaaaa', '#888888'];
 
@@ -358,3 +358,272 @@
     </script>
 </body>
 </html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experience Timeline</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: grey;
+            overflow-x: hidden;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 2rem 1rem;
+            gap: 2rem;
+        }
+
+        .timeline-card {
+            flex: 0 0 300px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-card.work {
+            border-left: 5px solid #00d1ff;
+        }
+
+        .timeline-card.education {
+            border-left: 5px solid #ff8000;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #00d1ff, #0072ff);
+        }
+
+        .timeline-card h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-card p {
+            color: grey;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .timeline-card span {
+            display: block;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #00d1ff;
+        }
+
+        .horizontal-scroll-hint {
+            text-align: center;
+            color: grey;
+            margin: 1rem 0;
+        }
+
+        .timeline-section {
+            margin: 4rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <h2 class="section-title">My Work History & Educational Background</h2>
+        <p class="horizontal-scroll-hint">Scroll horizontally to explore</p>
+        <div class="timeline-container">
+            <!-- Work Cards -->
+            <div class="timeline-card work">
+                <h3>Massachusetts Institute of Technology (MIT)</h3>
+                <p><strong>Role:</strong> Artificial Intelligence and Machine Learning Researcher</p>
+                <p><strong>Highlights:</strong> Advanced research on Bayesian inference, AI, and ML techniques in collaboration with senior faculty.</p>
+                <span>November 2024 - Present</span>
+            </div>
+
+            <div class="timeline-card work">
+                <h3>Massachusetts Institute of Technology (MIT)</h3>
+                <p><strong>Role:</strong> Lead Software Researcher</p>
+                <p><strong>Highlights:</strong> Contributed to a classified NIH grant project, leading software development and simulation efforts.</p>
+                <span>October 2024 - Present</span>
+            </div>
+
+            <div class="timeline-card work">
+                <h3>Arizona State University</h3>
+                <p><strong>Role:</strong> Software Integration Researcher</p>
+                <p><strong>Highlights:</strong> Developed the Mesquite Mocap, an affordable motion capture system using Arduino and JavaScript.</p>
+                <span>August 2024 - Present</span>
+            </div>
+
+            <div class="timeline-card work">
+                <h3>FintIQ</h3>
+                <p><strong>Role:</strong> Chief Executive Officer</p>
+                <p><strong>Highlights:</strong> Built a fintech application with ML-driven financial recommendations, leading multi-disciplinary teams.</p>
+                <span>May 2024 - Present</span>
+            </div>
+
+            <div class="timeline-card work">
+                <h3>ResearcHive</h3>
+                <p><strong>Role:</strong> Founder, Chief Executive Officer</p>
+                <p><strong>Highlights:</strong> Launched a national research platform funded by AWS, promoting interdisciplinary collaboration.</p>
+                <span>January 2024 - Present</span>
+            </div>
+
+            <div class="timeline-card work">
+                <h3>Helping Hands Corporation</h3>
+                <p><strong>Role:</strong> Founder, President</p>
+                <p><strong>Highlights:</strong> Founded a 501(c)(3) nonprofit, raised $500k+, and impacted 3,000+ individuals globally.</p>
+                <span>September 2022 - Present</span>
+            </div>
+
+            <!-- Education Cards -->
+            <div class="timeline-card education">
+                <h3>Massachusetts Institute of Technology</h3>
+                <p><strong>Course:</strong> Linear Algebra</p>
+                <p><strong>Details:</strong> Completed undergraduate-level coursework in Linear Algebra via MIT OpenCourseWare, essential for AI research.</p>
+                <span>2024</span>
+            </div>
+
+            <div class="timeline-card education">
+                <h3>Princeton University</h3>
+                <p><strong>Course:</strong> Analysis of Algorithms</p>
+                <p><strong>Details:</strong> Graduate-level course focusing on optimization and algorithm design, completed via Coursera.</p>
+                <span>2024</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Letter-by-Letter Reveal Section -->
+    <section>
+        <div class="container">
+            <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
+        </div>
+
+        <canvas id="particle-canvas"></canvas>
+
+        <script>
+            const revealText = document.getElementById('text');
+            const letters = Array.from(revealText.textContent).map(char => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.classList.add('char');
+                return span;
+            });
+
+            revealText.textContent = '';
+            letters.forEach(letter => revealText.appendChild(letter));
+
+            let virtualScroll = 0; // Tracks letter reveal progress
+            let totalLetters = letters.length;
+
+            window.addEventListener('wheel', (e) => {
+                const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
+                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
+
+                letters.forEach((letter, index) => {
+                    if (index < virtualScroll) {
+                        letter.style.color = '#ffffff'; // Reveal letter
+                        letter.style.opacity = '1';     // Full opacity
+                    } else {
+                        letter.style.color = 'grey';   // Default color
+                        letter.style.opacity = '0.2';  // Faint visibility
+                    }
+                });
+            });
+
+            // Particle background script
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            let particles = [];
+            const colors = ['#ffffff', '#aaaaaa', '#888888'];
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 5 + 1;
+                    this.speedX = Math.random() * 0.5 - 0.25;
+                    this.speedY = Math.random() * 0.5 - 0.25;
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    // Wrap around edges
+                    if (this.x > canvas.width) this.x = 0;
+                    if (this.x < 0) this.x = canvas.width;
+                    if (this.y > canvas.height) this.y = 0;
+                    if (this.y < 0) this.y = canvas.height;
+                }
+
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            }
+
+            function init() {
+                particles = [];
+                for (let i = 0; i < 200; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function handleParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+            }
+
+            init();
+            function animate() {
+                handleParticles();
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        </script>
+    </section>
+</body>
+</html>
+
