@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const ctx = canvas.getContext('2d');
 
     let particles = [];
-    const colors = ['#808080', '#aaaaaa', '#888888'];
+    const colors = ['#ffffff', '#aaaaaa', '#888888'];
+    const lineColor = 'rgba(200, 200, 200, 0.3)';  // Light grey with transparency
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         constructor() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 5 + 1; // Set initial size
+            this.size = Math.random() * 5 + 1; // Ensure initial size
             this.speedX = Math.random() * 0.5 - 0.25; // Slower horizontal speed
             this.speedY = Math.random() * 0.5 - 0.25; // Slower vertical speed
             this.color = colors[Math.floor(Math.random() * colors.length)];
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (distance < 100) {
                     ctx.beginPath();
-                    ctx.strokeStyle = particles[i].color;
+                    ctx.strokeStyle = lineColor;  // Set the line color with transparency
                     ctx.lineWidth = 0.2;
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
