@@ -208,7 +208,6 @@
             width: 90%;
             z-index: 2;
             pointer-events: none; /* Disable interaction with text */
-            transition: position 0.5s ease-in-out;
         }
 
         .reveal-text {
@@ -226,18 +225,17 @@
         }
 
         #particle-canvas {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 1;
-            transition: position 0.5s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <div class="container" id="container">
+    <div class="container">
         <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
     </div>
 
@@ -245,7 +243,6 @@
 
     <script>
         const revealText = document.getElementById('text');
-        const container = document.getElementById('container');
         const letters = Array.from(revealText.textContent).map(char => {
             const span = document.createElement('span');
             span.textContent = char;
@@ -257,43 +254,24 @@
         letters.forEach(letter => revealText.appendChild(letter));
 
         let virtualScroll = 0; // Tracks letter reveal progress
-        let realScrollEnabled = false; // Enables site scrolling
-        const totalLetters = letters.length;
+        let totalLetters = letters.length;
 
         window.addEventListener('wheel', (e) => {
-            if (!realScrollEnabled) {
-                e.preventDefault(); // Disable default scroll
-                const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
-                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
+            const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
+            virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
 
-                letters.forEach((letter, index) => {
-                    if (index < virtualScroll) {
-                        letter.style.color = '#ffffff'; // Reveal letter
-                        letter.style.opacity = '1';     // Full opacity
-                    } else {
-                        letter.style.color = 'grey';   // Default color
-                        letter.style.opacity = '0.2';  // Faint visibility
-                    }
-                });
-
-                // Enable real scrolling after all letters are revealed
-                if (virtualScroll >= totalLetters) {
-                    realScrollEnabled = true;
-
-                    // Change container and canvas position to relative
-                    container.style.position = 'relative';
-                    container.style.top = '0';
-
-                    const particleCanvas = document.getElementById('particle-canvas');
-                    particleCanvas.style.position = 'relative';
-                    particleCanvas.style.top = '0';
-
-                    document.body.style.overflowY = 'auto'; // Enable normal scrolling
+            letters.forEach((letter, index) => {
+                if (index < virtualScroll) {
+                    letter.style.color = '#ffffff'; // Reveal letter
+                    letter.style.opacity = '1';     // Full opacity
+                } else {
+                    letter.style.color = 'grey';   // Default color
+                    letter.style.opacity = '0.2';  // Faint visibility
                 }
-            }
+            });
         });
 
-        // Particle background script (unchanged from before)
+        // Particle background script
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
 
