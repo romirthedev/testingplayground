@@ -13,6 +13,7 @@
             color: grey;
             height: 300vh; /* Make the page tall for scrolling */
             overflow-x: hidden;
+            overflow-y: hidden; /* Initially disable vertical scrolling */
         }
 
         .reveal-text {
@@ -65,6 +66,8 @@
         revealText.textContent = '';
         letters.forEach(letter => revealText.appendChild(letter));
 
+        let allRevealed = false;
+
         window.addEventListener('scroll', () => {
             const scrollPosition = window.scrollY; // Get the user's scroll position
             const totalScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -81,6 +84,12 @@
                     letter.style.opacity = '0.2';  // Faint visibility
                 }
             });
+
+            // Check if all letters are revealed
+            if (!allRevealed && letters.every(letter => letter.style.color === '#ffffff')) {
+                allRevealed = true;
+                document.body.style.overflowY = 'auto'; // Enable vertical scrolling
+            }
         });
 
         // Particle background script
@@ -89,6 +98,7 @@
 
         let particles = [];
         const colors = ['#ffffff', '#aaaaaa', '#888888'];
+        const lineColor = 'rgba(200, 200, 200, 0.3)';  // Light grey with transparency
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -142,7 +152,7 @@
 
                     if (distance < 100) {
                         ctx.beginPath();
-                        ctx.strokeStyle = particles[i].color;
+                        ctx.strokeStyle = lineColor;  // Set the line color with transparency
                         ctx.lineWidth = 0.2;
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
