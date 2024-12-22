@@ -1,66 +1,86 @@
-const textContainer = document.querySelector('.text-container');
-const logoContainer = document.querySelector('.logo-container');
-const textElement = document.querySelector('#text');
-const logos = [
-    { url: 'https://logo.clearbit.com/google.com', x: 10, y: 10 },
-    { url: 'https://logo.clearbit.com/amazon.com', x: 200, y: 300 },
-    { url: 'https://logo.clearbit.com/microsoft.com', x: 400, y: 100 },
-    { url: 'https://logo.clearbit.com/facebook.com', x: 600, y: 200 },
-    { url: 'https://logo.clearbit.com/apple.com', x: 800, y: 400 },
-    { url: 'https://logo.clearbit.com/netflix.com', x: 100, y: 500 },
-    { url: 'https://logo.clearbit.com/spotify.com', x: 300, y: 600 },
-    { url: 'https://logo.clearbit.com/uber.com', x: 500, y: 700 },
-    { url: 'https://logo.clearbit.com/airbnb.com', x: 700, y: 800 },
-    { url: 'https://logo.clearbit.com/dropbox.com', x: 900, y: 900 },
-];
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
 
-const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.';
+    let particles = [];
+    const colors = ['#ffffff', '#aaaaaa', '#888888'];
 
-// Split the text into individual letters
-const letters = text.split('').map((letter, index) => {
-    const span = document.createElement('span');
-    span.classList.add('letter');
-    span.textContent = letter;
-    return span;
-});
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-// Append the letters to the text element
-letters.forEach((letter) => {
-    textElement.appendChild(letter);
-});
-
-let scrollPosition = 0;
-let logosVisible = 0;
-
-// Animate the logos
-logos.forEach((logo, index) => {
-    const logoElement = document.createElement('div');
-    logoElement.classList.add('logo');
-    logoElement.style.backgroundImage = `url(${logo.url})`;
-    logoElement.style.left = `${logo.x}px`;
-    logoElement.style.top = `${logo.y}px`;
-    logoContainer.appendChild(logoElement);
-});
-
-window.addEventListener('scroll', () => {
-    scrollPosition = window.scrollY;
-    const scrollProgress = scrollPosition / (document.body.offsetHeight - window.innerHeight);
-
-    // Animate the logos
-    logos.forEach((logo, index) => {
-        const logoElement = logoContainer.children[index];
-        logoElement.style.opacity = scrollProgress;
-        logoElement.style.transform = `translateY(-${scrollPosition / 10}px)`;
-    });
-
-    // Animate the text
-    letters.forEach((letter, index) => {
-        const scrollThreshold = index / letters.length;
-        if (scrollProgress > scrollThreshold) {
-            letter.style.color = '#fff'; // White
-        } else {
-            letter.style.color = '#ccc'; // Light gray
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 5;
+            this.speedX = Math.random() * 3 - 1.5;
+            this.speedY = Math.random() * 3 - 1.5;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
         }
-    });
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            if (this.size > 0.2) this.size -= 0.1;
+        }
+
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+        }
+    }
+
+    function init() {
+        particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function handleParticles() {
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+
+            for (let j = i; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 100) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = particles[i].color;
+                    ctx.lineWidth = 0.2;
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            }
+
+            if (particles[i].size <= 0.2) {
+                particles.splice(i, 1);
+                i--;
+            }
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        handleParticles();
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
 });
 
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    init();
+});
