@@ -178,7 +178,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scroll Reveal Text</title>
+    <title>Letter-by-Letter Reveal</title>
     <style>
         body {
             margin: 0;
@@ -247,14 +247,11 @@
         window.addEventListener('wheel', (e) => {
             if (!realScrollEnabled) {
                 e.preventDefault(); // Disable default scroll
-                const delta = e.deltaY > 0 ? 10 : -10; // Adjust scroll speed
-                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, 100)); // Limit scroll progress between 0 and 100
-
-                const scrollFraction = virtualScroll / 100;
+                const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
+                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, letters.length)); // Limit scroll to number of letters
 
                 letters.forEach((letter, index) => {
-                    const revealPoint = index / letters.length;
-                    if (scrollFraction > revealPoint) {
+                    if (index < virtualScroll) {
                         letter.style.color = '#ffffff'; // Transition to white
                         letter.style.opacity = '1';     // Fully visible
                     } else {
@@ -264,7 +261,7 @@
                 });
 
                 // Check if all text is revealed
-                if (scrollFraction >= 1) {
+                if (virtualScroll >= letters.length) {
                     realScrollEnabled = true;
                     document.body.style.overflow = 'auto'; // Enable normal scrolling
                 }
