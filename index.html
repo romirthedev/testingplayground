@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scroll Reveal Text</title>
+    <title>Professional Timeline and Reveal Text</title>
     <style>
         body {
             margin: 0;
@@ -35,12 +35,94 @@
             opacity: 0.2; /* Default opacity for unrevealed letters */
             transition: color 0.3s ease, opacity 0.3s ease;
         }
+
+        .timeline-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timeline {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 20px 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .event {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 0 20px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .event:hover {
+            transform: scale(1.1);
+        }
+
+        .event h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .event p {
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .event:hover p {
+            opacity: 1;
+        }
+
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <p class="reveal-text" id="text">Hello! My name is Romir. I'm Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
+        <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
     </div>
+
+    <div class="timeline-container">
+        <div class="timeline">
+            <div class="event" style="left: 10%;">
+                <div class="dot">High School</div>
+                <div class="content">Graduated from XYZ High School in 2000</div>
+            </div>
+            <div class="event" style="left: 25%;">
+                <div class="dot">Bachelor's Degree</div>
+                <div class="content">Completed Bachelor's in Computer Science from ABC University in 2004</div>
+            </div>
+            <div class="event" style="left: 40%;">
+                <div class="dot">First Job</div>
+                <div class="content">Started working at DEF Company as a Junior Developer in 2005</div>
+            </div>
+            <div class="event" style="left: 60%;">
+                <div class="dot">Master's Degree</div>
+                <div class="content">Completed Master's in Software Engineering from GHI University in 2010</div>
+            </div>
+            <div class="event" style="left: 80%;">
+                <div class="dot">Senior Developer</div>
+                <div class="content">Promoted to Senior Developer at DEF Company in 2015</div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="particle-canvas"></canvas>
 
     <script>
         const revealText = document.getElementById('text');
@@ -71,9 +153,92 @@
                 }
             });
         });
+
+        // Particle background script
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        const colors = ['#ffffff', '#aaaaaa', '#888888'];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.speedY = Math.random() * 3 - 1.5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.size > 0.2) this.size -= 0.1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = particles[i].color;
+                        ctx.lineWidth = 0.2;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+                }
+
+                if (particles[i].size <= 0.2) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
     </script>
 </body>
 </html>
-
-
-    
