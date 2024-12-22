@@ -361,7 +361,7 @@
 
 -->
  
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -549,3 +549,227 @@
     </script>
 </body>
 </html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter-by-Letter Reveal</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: grey;
+            height: 300vh; /* Simulated site height */
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            position: fixed;
+            top: 20%;
+            left: 5%;
+            width: 90%;
+            z-index: 2;
+            pointer-events: none; /* Disable interaction with text */
+        }
+
+        .reveal-text {
+            font-size: 2rem;
+            line-height: 1.5;
+            letter-spacing: 0.1em;
+            color: grey;
+            white-space: pre-wrap;
+        }
+
+        .char {
+            color: grey;
+            opacity: 0.2; /* Default opacity for unrevealed letters */
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .dummy-content {
+            margin-top: 100vh; /* Adds content below the visible area */
+            font-size: 1.5rem;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
+    </div>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="dummy-content">
+        <p>Scroll further to see the effect in action! This content appears after the text reveal animation.</p>
+        <p>Keep scrolling to test the page scroll behavior.</p>
+    </div>
+
+    <script>
+        const revealText = document.getElementById('text');
+        const letters = Array.from(revealText.textContent).map(char => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.classList.add('char');
+            return span;
+        });
+
+        revealText.textContent = '';
+        letters.forEach(letter => revealText.appendChild(letter));
+
+        let virtualScroll = 0; // Tracks letter reveal progress
+        let totalLetters = letters.length;
+        let textRevealed = false; // Flag to check if the text is fully revealed
+
+        // For smooth scrolling and letter reveal independently
+        window.addEventListener('wheel', (e) => {
+            e.preventDefault(); // Prevent the default scroll behavior
+
+            const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
+            virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
+
+            // Reveal text letter by letter
+            letters.forEach((letter, index) => {
+                if (index < virtualScroll) {
+                    letter.style.color = '#ffffff'; // Reveal letter
+                    letter.style.opacity = '1';     // Full opacity
+                } else {
+                    letter.style.color = 'grey';   // Default color
+                    letter.style.opacity = '0.2';  // Faint visibility
+                }
+            });
+
+            // If the text is fully revealed, allow normal scrolling behavior
+            if (virtualScroll >= totalLetters && !textRevealed) {
+                textRevealed = true; // Set flag
+                enableNormalScroll(); // Enable regular scroll behavior
+            }
+        }, { passive: false }); // Set passive: false to allow preventDefault()
+
+        function enableNormalScroll() {
+            // Allow the page to scroll naturally after the text is fully revealed
+            window.addEventListener('wheel', handlePageScroll, { passive: true });
+        }
+
+        function handlePageScroll(e) {
+            // Reverse the scroll direction after the text is revealed
+            const scrollSpeed = 0.3;
+            const moveAmount = e.deltaY * scrollSpeed;
+
+            // Apply the scrolling effect to both particles and text container
+            const particlesContainer = document.getElementById('particle-canvas');
+            const textContainer = document.querySelector('.container');
+
+            // Update the position to move up (negative value for upward movement)
+            const currentYText = parseFloat(window.getComputedStyle(textContainer).top);
+            const currentYParticles = parseFloat(window.getComputedStyle(particlesContainer).top);
+
+            textContainer.style.top = `${currentYText - moveAmount}px`; // Move text up
+            particlesContainer.style.top = `${currentYParticles - moveAmount}px`; // Move particles up
+        }
+
+        // Particle background script
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let particles = [];
+        const colors = ['#ffffff', '#aaaaaa', '#888888'];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Wrap around edges
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 200; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = particles[i].color;
+                        ctx.lineWidth = 0.2;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+    </script>
+</body>
+</html>
+
