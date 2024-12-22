@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Timeline and Reveal Text</title>
+    <title>Scroll Reveal Text</title>
     <style>
         body {
             margin: 0;
@@ -36,52 +36,6 @@
             transition: color 0.3s ease, opacity 0.3s ease;
         }
 
-        .timeline-container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .timeline {
-            display: flex;
-            overflow-x: auto;
-            white-space: nowrap;
-            padding: 20px 0;
-            position: relative;
-            z-index: 10;
-        }
-
-        .event {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 0 20px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .event:hover {
-            transform: scale(1.1);
-        }
-
-        .event h3 {
-            margin: 0;
-            font-size: 18px;
-        }
-
-        .event p {
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .event:hover p {
-            opacity: 1;
-        }
-
         #particle-canvas {
             position: absolute;
             top: 0;
@@ -95,31 +49,6 @@
 <body>
     <div class="container">
         <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
-    </div>
-
-    <div class="timeline-container">
-        <div class="timeline">
-            <div class="event" style="left: 10%;">
-                <div class="dot">High School</div>
-                <div class="content">Graduated from XYZ High School in 2000</div>
-            </div>
-            <div class="event" style="left: 25%;">
-                <div class="dot">Bachelor's Degree</div>
-                <div class="content">Completed Bachelor's in Computer Science from ABC University in 2004</div>
-            </div>
-            <div class="event" style="left: 40%;">
-                <div class="dot">First Job</div>
-                <div class="content">Started working at DEF Company as a Junior Developer in 2005</div>
-            </div>
-            <div class="event" style="left: 60%;">
-                <div class="dot">Master's Degree</div>
-                <div class="content">Completed Master's in Software Engineering from GHI University in 2010</div>
-            </div>
-            <div class="event" style="left: 80%;">
-                <div class="dot">Senior Developer</div>
-                <div class="content">Promoted to Senior Developer at DEF Company in 2015</div>
-            </div>
-        </div>
     </div>
 
     <canvas id="particle-canvas"></canvas>
