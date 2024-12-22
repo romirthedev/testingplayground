@@ -374,6 +374,7 @@
             background-color: black;
             color: grey;
             overflow-x: hidden;
+            overflow-y: hidden; /* Prevent vertical scrolling initially */
         }
 
         .section-title {
@@ -513,8 +514,14 @@
 
         let virtualScroll = 0;
         let totalLetters = letters.length;
+        let canScroll = false; // Flag to track if scrolling is allowed
 
         window.addEventListener('wheel', (e) => {
+            // Prevent page scrolling if text is not fully revealed
+            if (!canScroll) {
+                e.preventDefault();
+            }
+
             const delta = e.deltaY > 0 ? 5 : -5; 
             virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); 
 
@@ -527,6 +534,12 @@
                     letter.style.opacity = '0.2';  
                 }
             });
+
+            // Enable scrolling once all letters are revealed
+            if (virtualScroll === totalLetters) {
+                canScroll = true;
+                document.body.style.overflowY = 'auto'; // Enable vertical scrolling
+            }
         });
 
         const canvas = document.getElementById('particle-canvas');
@@ -625,53 +638,9 @@
                 <p><strong>Highlights:</strong> Advanced research on Bayesian inference, AI, and ML techniques in collaboration with senior faculty.</p>
                 <span>November 2024 - Present</span>
             </div>
-
-            <div class="timeline-card work">
-                <h3>Massachusetts Institute of Technology (MIT)</h3>
-                <p><strong>Role:</strong> Lead Software Researcher</p>
-                <p><strong>Highlights:</strong> Contributed to a classified NIH grant project, leading software development and simulation efforts.</p>
-                <span>October 2024 - Present</span>
-            </div>
-        <div class="timeline-card work">
-                <h3>Massachusetts Institute of Technology (MIT)</h3>
-                <p><strong>Role:</strong> Lead Software Researcher</p>
-                <p><strong>Highlights:</strong> Contributed to a classified NIH grant project, leading software development and simulation efforts.</p>
-                <span>October 2024 - Present</span>
-            </div>
-        <div class="timeline-card work">
-                <h3>Massachusetts Institute of Technology (MIT)</h3>
-                <p><strong>Role:</strong> Lead Software Researcher</p>
-                <p><strong>Highlights:</strong> Contributed to a classified NIH grant project, leading software development and simulation efforts.</p>
-                <span>October 2024 - Present</span>
-            </div>
-        <div class="timeline-card work">
-                <h3>Massachusetts Institute of Technology (MIT)</h3>
-                <p><strong>Role:</strong> Lead Software Researcher</p>
-                <p><strong>Highlights:</strong> Contributed to a classified NIH grant project, leading software development and simulation efforts.</p>
-                <span>October 2024 - Present</span>
-            </div>
-        <div class="timeline-card work">
-                <h3>Massachusetts Institute of Technology (MIT)</h3>
-                <p><strong>Role:</strong> Lead Software Researcher</p>
-                <p><strong>Highlights:</strong> Contributed to a classified NIH grant project, leading software development and simulation efforts.</p>
-                <span>October 2024 - Present</span>
-            </div>
-
-            <!-- Education Cards -->
-            <div class="timeline-card education">
-                <h3>Arizona State University (ASU)</h3>
-                <p><strong>Program:</strong> Bachelor of Science in Software Engineering</p>
-                <p><strong>Highlights:</strong> In-depth study of computer systems, algorithms, and software design patterns.</p>
-                <span>September 2023 - Present</span>
-            </div>
-
-            <div class="timeline-card education">
-                <h3>Massachusetts Institute of Technology (MIT)</h3>
-                <p><strong>Program:</strong> Research Internship in Motion Capture Systems</p>
-                <p><strong>Highlights:</strong> Led research on the integration of BNO chipsets into motion capture systems for high precision movement tracking.</p>
-                <span>Summer 2024</span>
-            </div>
+            <!-- More timeline cards go here -->
         </div>
     </section>
 </body>
 </html>
+
