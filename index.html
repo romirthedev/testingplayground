@@ -3,181 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scroll Reveal Text</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: black;
-            color: grey;
-            height: 300vh; /* Make the page tall for scrolling */
-            overflow-x: hidden;
-        }
-
-        .reveal-text {
-            font-size: 2rem;
-            line-height: 1.5;
-            letter-spacing: 0.1em;
-            color: grey;
-            white-space: pre-wrap;
-        }
-
-        .container {
-            position: fixed;
-            top: 20%;
-            left: 5%;
-            width: 90%;
-        }
-
-        .char {
-            color: grey;
-            opacity: 0.2; /* Default opacity for unrevealed letters */
-            transition: color 0.3s ease, opacity 0.3s ease;
-        }
-
-        #particle-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
-    </div>
-
-    <canvas id="particle-canvas"></canvas>
-
-    <script>
-        const revealText = document.getElementById('text');
-        const letters = Array.from(revealText.textContent).map(char => {
-            const span = document.createElement('span');
-            span.textContent = char;
-            span.classList.add('char');
-            return span;
-        });
-
-        revealText.textContent = '';
-        letters.forEach(letter => revealText.appendChild(letter));
-
-        window.addEventListener('scroll', () => {
-            const scrollPosition = window.scrollY; // Get the user's scroll position
-            const totalScrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-
-            const scrollFraction = scrollPosition / totalScrollHeight; // Normalized scroll percentage
-
-            letters.forEach((letter, index) => {
-                const revealPoint = index / letters.length;
-                if (scrollFraction > revealPoint) {
-                    letter.style.color = '#ffffff'; // Transition to white
-                    letter.style.opacity = '1';     // Fully visible
-                } else {
-                    letter.style.color = 'grey';   // Default color
-                    letter.style.opacity = '0.2';  // Faint visibility
-                }
-            });
-        });
-
-        // Particle background script
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let particles = [];
-        const colors = ['#ffffff', '#aaaaaa', '#888888'];
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 5 + 1; // Ensure initial size
-                this.speedX = Math.random() * 0.5 - 0.25; // Slower horizontal speed
-                this.speedY = Math.random() * 0.5 - 0.25; // Slower vertical speed
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                // Wrap around edges of the canvas
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            particles = [];
-            for (let i = 0; i < 200; i++) { // Increase number of particles
-                particles.push(new Particle());
-            }
-        }
-
-        function handleParticles() {
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = particles[i].color;
-                        ctx.lineWidth = 0.2;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.closePath();
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            handleParticles();
-            requestAnimationFrame(animate);
-        }
-
-        init();
-        animate();
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
-    </script>
-</body>
-</html>
--->
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Letter-by-Letter Reveal</title>
     <style>
         body {
@@ -357,3 +182,202 @@
     </script>
 </body>
 </html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter-by-Letter Reveal</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: grey;
+            height: 300vh; /* Simulated site height */
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: fixed;
+            top: 20%;
+            left: 5%;
+            width: 90%;
+            z-index: 2;
+            pointer-events: none; /* Disable interaction with text */
+            transition: position 0.5s ease-in-out;
+        }
+
+        .reveal-text {
+            font-size: 2rem;
+            line-height: 1.5;
+            letter-spacing: 0.1em;
+            color: grey;
+            white-space: pre-wrap;
+        }
+
+        .char {
+            color: grey;
+            opacity: 0.2; /* Default opacity for unrevealed letters */
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            transition: position 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
+    </div>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <script>
+        const revealText = document.getElementById('text');
+        const container = document.getElementById('container');
+        const letters = Array.from(revealText.textContent).map(char => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.classList.add('char');
+            return span;
+        });
+
+        revealText.textContent = '';
+        letters.forEach(letter => revealText.appendChild(letter));
+
+        let virtualScroll = 0; // Tracks letter reveal progress
+        let realScrollEnabled = false; // Enables site scrolling
+        const totalLetters = letters.length;
+
+        window.addEventListener('wheel', (e) => {
+            if (!realScrollEnabled) {
+                e.preventDefault(); // Disable default scroll
+                const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
+                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
+
+                letters.forEach((letter, index) => {
+                    if (index < virtualScroll) {
+                        letter.style.color = '#ffffff'; // Reveal letter
+                        letter.style.opacity = '1';     // Full opacity
+                    } else {
+                        letter.style.color = 'grey';   // Default color
+                        letter.style.opacity = '0.2';  // Faint visibility
+                    }
+                });
+
+                // Enable real scrolling after all letters are revealed
+                if (virtualScroll >= totalLetters) {
+                    realScrollEnabled = true;
+
+                    // Change container and canvas position to relative
+                    container.style.position = 'relative';
+                    container.style.top = '0';
+
+                    const particleCanvas = document.getElementById('particle-canvas');
+                    particleCanvas.style.position = 'relative';
+                    particleCanvas.style.top = '0';
+
+                    document.body.style.overflowY = 'auto'; // Enable normal scrolling
+                }
+            }
+        });
+
+        // Particle background script
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        const colors = ['#ffffff', '#aaaaaa', '#888888'];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Wrap around edges
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 200; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = particles[i].color;
+                        ctx.lineWidth = 0.2;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+    </script>
+</body>
+</html>
+
