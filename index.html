@@ -374,7 +374,7 @@
             background-color: black;
             color: grey;
             overflow-x: hidden;
-            overflow-y: hidden; /* Prevent vertical scrolling initially */
+            overflow-y: auto; /* Allow vertical scrolling after text is fully revealed */
         }
 
         .section-title {
@@ -494,7 +494,7 @@
 </head>
 <body>
     <!-- Letter-by-Letter Reveal Section -->
-   <div class="container">
+    <div class="container">
         <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
     </div>
 
@@ -514,14 +514,8 @@
 
         let virtualScroll = 0;
         let totalLetters = letters.length;
-        let canScroll = false; // Flag to track if scrolling is allowed
 
         window.addEventListener('wheel', (e) => {
-            // Prevent page scrolling if text is not fully revealed
-            if (!canScroll) {
-                e.preventDefault();
-            }
-
             const delta = e.deltaY > 0 ? 5 : -5; 
             virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); 
 
@@ -535,10 +529,11 @@
                 }
             });
 
-            // Enable scrolling once all letters are revealed
+            // Once all letters are revealed, allow page scrolling naturally
             if (virtualScroll === totalLetters) {
-                canScroll = true;
                 document.body.style.overflowY = 'auto'; // Enable vertical scrolling
+            } else {
+                e.preventDefault(); // Prevent scrolling during text reveal
             }
         });
 
@@ -635,7 +630,7 @@
             <div class="timeline-card work">
                 <h3>Massachusetts Institute of Technology (MIT)</h3>
                 <p><strong>Role:</strong> Artificial Intelligence and Machine Learning Researcher</p>
-                <p><strong>Highlights:</strong> Advanced research on Bayesian inference, AI, and ML techniques in collaboration with the Department of Electrical Engineering.</p>
+                <p><strong>Highlights:</strong> Advanced research on Bayesian inference, AI, and ML techniques in the Department of Electrical Engineering.</p>
                 <span>2023 – Present</span>
             </div>
 
@@ -652,3 +647,4 @@
     </section>
 </body>
 </html>
+
