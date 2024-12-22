@@ -186,8 +186,8 @@
             font-family: Arial, sans-serif;
             background-color: black;
             color: grey;
-            height: 300vh; /* Make the page tall for scrolling */
-            overflow-x: hidden;
+            overflow: hidden; /* Prevent default scrolling */
+            height: 300vh; /* Total height for normal scrolling */
         }
 
         .reveal-text {
@@ -223,7 +223,7 @@
     </style>
 </head>
 <body>
-    <div class="container" id="container">
+    <div class="container">
         <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
     </div>
 
@@ -231,7 +231,6 @@
 
     <script>
         const revealText = document.getElementById('text');
-        const container = document.getElementById('container');
         const letters = Array.from(revealText.textContent).map(char => {
             const span = document.createElement('span');
             span.textContent = char;
@@ -242,19 +241,20 @@
         revealText.textContent = '';
         letters.forEach(letter => revealText.appendChild(letter));
 
-        let fullyRevealed = false;
+        let virtualScroll = 0; // Track virtual scroll position
+        let realScrollEnabled = false; // Flag to enable normal scrolling
 
-        window.addEventListener('scroll', () => {
-            if (!fullyRevealed) {
-                // Prevent normal scrolling until fully revealed
-                window.scrollTo(0, 0);
+        window.addEventListener('wheel', (e) => {
+            if (!realScrollEnabled) {
+                e.preventDefault(); // Disable default scroll
+                const delta = e.deltaY > 0 ? 10 : -10; // Adjust scroll speed
+                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, 100)); // Limit scroll progress between 0 and 100
 
-                const scrollPosition = window.scrollY; // Get the user's scroll position
-                const revealAmount = Math.min(scrollPosition / 300, 1); // Adjust 300 for sensitivity
+                const scrollFraction = virtualScroll / 100;
 
                 letters.forEach((letter, index) => {
                     const revealPoint = index / letters.length;
-                    if (revealAmount > revealPoint) {
+                    if (scrollFraction > revealPoint) {
                         letter.style.color = '#ffffff'; // Transition to white
                         letter.style.opacity = '1';     // Fully visible
                     } else {
@@ -263,10 +263,10 @@
                     }
                 });
 
-                // Check if all letters are fully revealed
-                if (revealAmount >= 1) {
-                    fullyRevealed = true;
-                    container.style.position = 'relative'; // Allow scrolling
+                // Check if all text is revealed
+                if (scrollFraction >= 1) {
+                    realScrollEnabled = true;
+                    document.body.style.overflow = 'auto'; // Enable normal scrolling
                 }
             }
         });
