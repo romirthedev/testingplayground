@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ctx = canvas.getContext('2d');
 
     let particles = [];
-    const colors = ['#ffffff', '#aaaaaa', '#888888'];
+    const colors = ['#808080', '#aaaaaa', '#888888'];
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
