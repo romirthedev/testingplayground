@@ -363,8 +363,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Experience Timeline</title>
@@ -455,14 +453,16 @@
 
         .timeline-section {
             margin: 4rem 0;
+            margin-top: 20vh; /* Add margin to push timeline below the intro text */
         }
+
         .container {
             position: fixed;
             top: 20%;
             left: 5%;
             width: 90%;
             z-index: 2;
-            pointer-events: none; /* Disable interaction with text */
+            pointer-events: none;
         }
 
         .reveal-text {
@@ -475,7 +475,7 @@
 
         .char {
             color: grey;
-            opacity: 0.2; /* Default opacity for unrevealed letters */
+            opacity: 0.2;
             transition: color 0.3s ease, opacity 0.3s ease;
         }
 
@@ -510,25 +510,24 @@
         revealText.textContent = '';
         letters.forEach(letter => revealText.appendChild(letter));
 
-        let virtualScroll = 0; // Tracks letter reveal progress
+        let virtualScroll = 0;
         let totalLetters = letters.length;
 
         window.addEventListener('wheel', (e) => {
-            const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
-            virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
+            const delta = e.deltaY > 0 ? 5 : -5; 
+            virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); 
 
             letters.forEach((letter, index) => {
                 if (index < virtualScroll) {
-                    letter.style.color = '#ffffff'; // Reveal letter
-                    letter.style.opacity = '1';     // Full opacity
+                    letter.style.color = '#ffffff'; 
+                    letter.style.opacity = '1';     
                 } else {
-                    letter.style.color = 'grey';   // Default color
-                    letter.style.opacity = '0.2';  // Faint visibility
+                    letter.style.color = 'grey';   
+                    letter.style.opacity = '0.2';  
                 }
             });
         });
 
-        // Particle background script
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         
@@ -552,7 +551,6 @@
                 this.x += this.speedX;
                 this.y += this.speedY;
 
-                // Wrap around edges
                 if (this.x > canvas.width) this.x = 0;
                 if (this.x < 0) this.x = canvas.width;
                 if (this.y > canvas.height) this.y = 0;
@@ -613,7 +611,6 @@
             init();
         });
     </script>
-    </section>
 
     <!-- Timeline Section -->
     <section class="timeline-section">
@@ -635,54 +632,18 @@
                 <span>October 2024 - Present</span>
             </div>
 
-            <div class="timeline-card work">
-                <h3>Arizona State University</h3>
-                <p><strong>Role:</strong> Software Integration Researcher</p>
-                <p><strong>Highlights:</strong> Developed the Mesquite Mocap, an affordable motion capture system using Arduino and JavaScript.</p>
-                <span>August 2024 - Present</span>
-            </div>
-
-            <div class="timeline-card work">
-                <h3>FintIQ</h3>
-                <p><strong>Role:</strong> Chief Executive Officer</p>
-                <p><strong>Highlights:</strong> Built a fintech application with ML-driven financial recommendations, leading multi-disciplinary teams.</p>
-                <span>May 2024 - Present</span>
-            </div>
-
-            <div class="timeline-card work">
-                <h3>ResearcHive</h3>
-                <p><strong>Role:</strong> Founder, Chief Executive Officer</p>
-                <p><strong>Highlights:</strong> Launched a national research platform funded by AWS, promoting interdisciplinary collaboration.</p>
-                <span>January 2024 - Present</span>
-            </div>
-
-            <div class="timeline-card work">
-                <h3>Helping Hands Corporation</h3>
-                <p><strong>Role:</strong> Founder, President</p>
-                <p><strong>Highlights:</strong> Founded a 501(c)(3) nonprofit, raised $500k+, and impacted 3,000+ individuals globally.</p>
-                <span>September 2022 - Present</span>
-            </div>
-
-            <!-- Education Cards -->
             <div class="timeline-card education">
-                <h3>Massachusetts Institute of Technology</h3>
-                <p><strong>Course:</strong> Linear Algebra</p>
-                <p><strong>Details:</strong> Completed undergraduate-level coursework in Linear Algebra via MIT OpenCourseWare, essential for AI research.</p>
-                <span>2024</span>
+                <h3>Arizona State University (ASU)</h3>
+                <p><strong>Program:</strong> Bachelor of Science in Software Engineering</p>
+                <p><strong>Highlights:</strong> In-depth study of computer systems, algorithms, and software design patterns.</p>
+                <span>September 2023 - Present</span>
             </div>
 
             <div class="timeline-card education">
-                <h3>Princeton University</h3>
-                <p><strong>Course:</strong> Advanced Programming Techniques</p>
-                <p><strong>Details:</strong> Focused on Python, advanced algorithms, and software engineering principles.</p>
-                <span>2023</span>
-            </div>
-
-            <div class="timeline-card education">
-                <h3>Arizona State University</h3>
-                <p><strong>Course:</strong> Research in Machine Learning</p>
-                <p><strong>Details:</strong> Conducted original research exploring the implications of AI on social equity and ethics.</p>
-                <span>2022</span>
+                <h3>Massachusetts Institute of Technology (MIT)</h3>
+                <p><strong>Program:</strong> Research Internship in Motion Capture Systems</p>
+                <p><strong>Highlights:</strong> Led research on the integration of BNO chipsets into motion capture systems for high precision movement tracking.</p>
+                <span>Summer 2024</span>
             </div>
         </div>
     </section>
