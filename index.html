@@ -387,248 +387,273 @@
 </body>
 </html>
 -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work & Education Cards</title>
+    <title>Letter-by-Letter Reveal</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #121212;
             font-family: Arial, sans-serif;
-            color: #f1f1f1;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-color: black;
+            color: grey;
+            height: 300vh; /* Simulated site height */
+            overflow-x: hidden;
         }
 
-        /* Existing styles for particles and scroll-based text (unchanged) */
-        .particles-container {
-            position: absolute;
+        .container {
+            position: relative; /* Changed from fixed to relative */
+            margin: 20vh 5%; /* Creates spacing like before */
+            width: 90%;
+            z-index: 2;
+        }
+
+        .reveal-text {
+            font-size: 2rem;
+            line-height: 1.5;
+            letter-spacing: 0.1em;
+            color: grey;
+            white-space: pre-wrap;
+        }
+
+        .char {
+            color: grey;
+            opacity: 0.2; /* Default opacity for unrevealed letters */
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+
+        #particle-canvas {
+            position: absolute; /* Changed from fixed to absolute */
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh; /* Particle canvas now occupies only the viewport height */
+            z-index: 1;
             pointer-events: none;
         }
 
-        .scroll-text {
-            position: absolute;
-            bottom: 10%;
-            width: 100%;
-            text-align: center;
-            font-size: 2rem;
-            animation: scroll 10s linear infinite;
-        }
-
-        @keyframes scroll {
-            0% {
-                transform: translateY(100%);
-            }
-            100% {
-                transform: translateY(-100%);
-            }
-        }
-
-        /* Styling for the cards section */
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            width: 80%;
-            height: 80%;
-            position: relative;
-            padding: 20px;
-            margin-top: 100px; /* Adjusts positioning to be below particles and scroll text */
-        }
-
-        .card {
-            perspective: 1000px; /* Creates the 3D effect */
-        }
-
-        .card-content {
-            width: 100%;
-            height: 200px;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .card:hover .card-inner {
-            transform: rotateY(180deg); /* Flips the card */
-        }
-
-        .card-inner {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-            border-radius: 10px;
-        }
-
-        .card-front {
-            background-color: #333;
-            color: #f1f1f1;
-        }
-
-        .card-back {
-            background-color: #444;
-            color: #ddd;
-            transform: rotateY(180deg); /* Keeps back hidden initially */
-        }
-
-        .card-title {
+        .dummy-content {
+            margin-top: 50vh; /* Adjusted spacing */
             font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .card-description {
-            font-size: 1rem;
-            text-align: center;
-            opacity: 0.8;
-        }
-
-        .card-back .details {
-            font-size: 1rem;
-            text-align: center;
-            padding: 10px;
-            font-style: italic;
-        }
-
-        .content-container {
-            width: 100%;
+            color: white;
             padding: 20px;
             text-align: center;
         }
 
-        h1 {
-            margin-bottom: 20px;
-            color: #f1f1f1;
+        .experience-section {
+            position: absolute;
+            bottom: 10vh;
+            left: 5%;
+            width: 90%;
+            z-index: 2;
+            color: white;
+            font-size: 1.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .experience-card {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            width: 48%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .experience-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.7);
+        }
+
+        .experience-card h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #ffffff;
+        }
+
+        .experience-card p {
+            font-size: 1rem;
+            color: #dddddd;
+            margin: 5px 0;
+        }
+
+        .experience-card .role {
+            font-weight: bold;
+        }
+
+        .experience-card .institution {
+            font-style: italic;
         }
     </style>
 </head>
 <body>
+    <canvas id="particle-canvas"></canvas>
 
-    <!-- Particles and scroll-based text (unchanged) -->
-    <div class="particles-container">
-        <!-- Your particles animation code goes here -->
+    <div class="container">
+        <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
     </div>
 
-    <div class="scroll-text">
-        <!-- Scroll text content here -->
-        <p>Random Work & Education Experiences</p>
+    <div class="dummy-content">
+        <p>Scroll further to see the effect in action! This content appears after the text reveal animation.</p>
+        <p>Keep scrolling to test the page scroll behavior.</p>
     </div>
 
-    <!-- Cards Section Below -->
-    <div class="content-container">
-        <h1>Work Experience & Education</h1>
-        <div class="card-container" id="cardContainer">
-            <!-- Cards will be inserted here dynamically -->
+    <!-- Experience Section -->
+    <div class="experience-section">
+        <div class="experience-card">
+            <h3>MIT Researcher</h3>
+            <p class="role">Researcher in Biocomputing</p>
+            <p class="institution">MIT School of Engineering & Department of Chemistry</p>
+            <p>Contributing to groundbreaking projects in biocomputing, including a NIH-funded software project for CRISPR-related research.</p>
+        </div>
+        <div class="experience-card">
+            <h3>ASU Researcher</h3>
+            <p class="role">Researcher in Motion Capture Technology</p>
+            <p class="institution">Arizona State University</p>
+            <p>Worked on the Mesquite Mocap project, focusing on software and hardware integration for motion capture systems.</p>
+        </div>
+        <div class="experience-card">
+            <h3>CEO</h3>
+            <p class="role">Founder & CEO</p>
+            <p class="institution">Multiple Startups</p>
+            <p>Led three startups in various sectors, overseeing strategic direction, fundraising, and product development.</p>
+        </div>
+        <div class="experience-card">
+            <h3>Board Member</h3>
+            <p class="role">Board Member</p>
+            <p class="institution">KeelWorks Foundation</p>
+            <p>Contributed to global initiatives focused on supporting underrepresented groups in technology and entrepreneurship.</p>
         </div>
     </div>
 
     <script>
-        // Data for the work and education background (You can add or modify as needed)
-        const experiences = [
-            {
-                title: "Researcher at MIT",
-                description: "Biocomputing & Modeling Research",
-                details: "Worked in the Department of Engineering & Department of Chemistry on cutting-edge research related to CRISPR and anti-CRISPR systems. Focused on computational modeling and simulations."
-            },
-            {
-                title: "CEO of 4 Startups",
-                description: "Founder & CEO of multiple tech startups",
-                details: "Founded and managed several startups in the technology and research sectors, focusing on AI, CRISPR, and motion capture systems."
-            },
-            {
-                title: "Board Member at KeelWorks Foundation",
-                description: "Board Member of Nonprofit Foundation",
-                details: "Served on the Board of Directors for KeelWorks Foundation, overseeing operations and strategic development of initiatives supporting technology and research."
-            },
-            {
-                title: "Bachelor of Science in Engineering (ASU)",
-                description: "Bachelor's Degree in Engineering",
-                details: "Graduated with a focus in computational modeling, CRISPR research, and biocomputing from Arizona State University, focusing on hands-on research and project development."
-            },
-            {
-                title: "Intern at MIT (Biocomputing & Modeling)",
-                description: "Internship in Biocomputing",
-                details: "Participated in an MIT internship where I contributed to various research projects in biocomputing, gaining experience in software development and molecular simulations."
-            },
-            {
-                title: "Founder of HelpingH Nonprofit",
-                description: "Nonprofit Supporting Job Seekers",
-                details: "Founded HelpingH, a nonprofit organization aimed at assisting individuals without formal degrees to find job opportunities in tech and other industries."
+        const revealText = document.getElementById('text');
+        const letters = Array.from(revealText.textContent).map(char => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.classList.add('char');
+            return span;
+        });
+
+        revealText.textContent = '';
+        letters.forEach(letter => revealText.appendChild(letter));
+
+        let virtualScroll = 0; // Tracks letter reveal progress
+        let totalLetters = letters.length;
+        let textRevealed = false; // Flag to check if the text is fully revealed
+
+        function handleScroll(e) {
+            const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
+            if (!textRevealed) {
+                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
+
+                // Reveal text letter by letter
+                letters.forEach((letter, index) => {
+                    if (index < virtualScroll) {
+                        letter.style.color = '#ffffff'; // Reveal letter
+                        letter.style.opacity = '1';     // Full opacity
+                    } else {
+                        letter.style.color = 'grey';   // Default color
+                        letter.style.opacity = '0.2';  // Faint visibility
+                    }
+                });
+
+                // If the text is fully revealed, allow normal scrolling behavior
+                if (virtualScroll >= totalLetters) {
+                    textRevealed = true; // Set flag
+                    window.removeEventListener('wheel', handleScroll); // Enable normal scrolling
+                }
             }
-        ];
-
-        // Function to generate and insert the cards into the container
-        function createCards() {
-            const cardContainer = document.getElementById('cardContainer');
-            experiences.forEach(exp => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-
-                const cardContent = document.createElement('div');
-                cardContent.classList.add('card-content');
-
-                const cardInner = document.createElement('div');
-                cardInner.classList.add('card-inner');
-
-                // Front of the card
-                const cardFront = document.createElement('div');
-                cardFront.classList.add('card-front');
-                cardFront.innerHTML = `
-                    <div class="card-title">${exp.title}</div>
-                    <div class="card-description">${exp.description}</div>
-                `;
-
-                // Back of the card (detailed information)
-                const cardBack = document.createElement('div');
-                cardBack.classList.add('card-back');
-                cardBack.innerHTML = `
-                    <div class="details">${exp.details}</div>
-                `;
-
-                // Append front and back to the card inner
-                cardInner.appendChild(cardFront);
-                cardInner.appendChild(cardBack);
-
-                // Append card inner to card content
-                cardContent.appendChild(cardInner);
-
-                // Append card content to the card
-                card.appendChild(cardContent);
-
-                // Append card to the container
-                cardContainer.appendChild(card);
-            });
         }
 
-        // Create the cards dynamically when the page loads
-        createCards();
+        window.addEventListener('wheel', handleScroll, { passive: false }); // Add scroll handler
+
+        // Particle background script
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let particles = [];
+        const colors = ['#ffffff', '#aaaaaa', '#888888'];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Wrap around edges
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 200; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = particles[i].color;
+                        ctx.lineWidth = 0.2;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
     </script>
-    
 </body>
 </html>
 
