@@ -406,8 +406,8 @@
         }
 
         .container {
-            position: relative; /* Changed from fixed to relative */
-            margin: 20vh 5%; /* Creates spacing like before */
+            position: relative;
+            margin: 20vh 5%; 
             width: 90%;
             z-index: 2;
         }
@@ -422,74 +422,102 @@
 
         .char {
             color: grey;
-            opacity: 0.2; /* Default opacity for unrevealed letters */
+            opacity: 0.2;
             transition: color 0.3s ease, opacity 0.3s ease;
         }
 
         #particle-canvas {
-            position: absolute; /* Changed from fixed to absolute */
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh; /* Particle canvas now occupies only the viewport height */
+            height: 100vh;
             z-index: 1;
             pointer-events: none;
         }
 
         .dummy-content {
-            margin-top: 50vh; /* Adjusted spacing */
+            margin-top: 50vh;
             font-size: 1.5rem;
             color: white;
             padding: 20px;
             text-align: center;
         }
 
+        /* New Experience Section Styling */
         .experience-section {
             position: absolute;
-            bottom: 10vh;
+            top: 120vh;  /* Positioned below the text and particles */
             left: 5%;
             width: 90%;
-            z-index: 2;
-            color: white;
-            font-size: 1.2rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 15px;
+            z-index: 3;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 50px 0;
+            animation: fadeIn 2s ease-in-out;
         }
 
         .experience-card {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 15px;
-            width: 48%;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.9));
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .experience-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+            color: white;
+            cursor: pointer;
         }
 
         .experience-card h3 {
-            margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.7rem;
+            font-weight: bold;
+            margin-bottom: 10px;
             color: #ffffff;
         }
 
         .experience-card p {
-            font-size: 1rem;
-            color: #dddddd;
-            margin: 5px 0;
+            font-size: 1.1rem;
+            color: #dcdcdc;
+            margin: 10px 0;
         }
 
         .experience-card .role {
-            font-weight: bold;
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
         .experience-card .institution {
             font-style: italic;
+            color: #aaa;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Parallax Effect */
+        .parallax {
+            transform: translateZ(0);
+            perspective: 1px;
+            overflow-x: hidden;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .parallax > * {
+            transform: translateZ(-1px) scale(2);
         }
     </style>
 </head>
@@ -610,14 +638,13 @@
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
                 ctx.fill();
             }
         }
 
         function init() {
             particles = [];
-            for (let i = 0; i < 200; i++) {
+            for (let i = 0; i < 100; i++) {
                 particles.push(new Particle());
             }
         }
@@ -626,22 +653,6 @@
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = particles[i].color;
-                        ctx.lineWidth = 0.2;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                        ctx.closePath();
-                    }
-                }
             }
         }
 
