@@ -387,13 +387,12 @@
 </body>
 </html>
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Letter-by-Letter Reveal</title>
+    <title>Unique Background Display</title>
     <style>
         body {
             margin: 0;
@@ -406,8 +405,8 @@
         }
 
         .container {
-            position: relative; /* Changed from fixed to relative */
-            margin: 20vh 5%; /* Creates spacing like before */
+            position: relative; 
+            margin: 20vh 5%;
             width: 90%;
             z-index: 2;
         }
@@ -422,26 +421,58 @@
 
         .char {
             color: grey;
-            opacity: 0.2; /* Default opacity for unrevealed letters */
+            opacity: 0.2; 
             transition: color 0.3s ease, opacity 0.3s ease;
         }
 
         #particle-canvas {
-            position: absolute; /* Changed from fixed to absolute */
+            position: absolute; 
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh; /* Particle canvas now occupies only the viewport height */
+            height: 100vh; 
             z-index: 1;
             pointer-events: none;
         }
 
-        .dummy-content {
-            margin-top: 50vh; /* Adjusted spacing */
+        .floating-bubble {
+            position: absolute;
             font-size: 1.5rem;
             color: white;
-            padding: 20px;
-            text-align: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 50%;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+            animation: float 5s infinite ease-in-out;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .floating-bubble p {
+            margin: 0;
+            word-wrap: break-word;
+            font-size: 1rem;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-50px) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .content-container {
+            position: relative;
+            z-index: 3;
+            padding-top: 50vh;
         }
     </style>
 </head>
@@ -452,9 +483,8 @@
         <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
     </div>
 
-    <div class="dummy-content">
-        <p>Scroll further to see the effect in action! This content appears after the text reveal animation.</p>
-        <p>Keep scrolling to test the page scroll behavior.</p>
+    <div class="content-container">
+        <!-- Bubbles will be dynamically created below -->
     </div>
 
     <script>
@@ -469,37 +499,34 @@
         revealText.textContent = '';
         letters.forEach(letter => revealText.appendChild(letter));
 
-        let virtualScroll = 0; // Tracks letter reveal progress
+        let virtualScroll = 0; 
         let totalLetters = letters.length;
-        let textRevealed = false; // Flag to check if the text is fully revealed
+        let textRevealed = false;
 
         function handleScroll(e) {
-            const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
+            const delta = e.deltaY > 0 ? 5 : -5;
             if (!textRevealed) {
-                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
+                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters));
 
-                // Reveal text letter by letter
                 letters.forEach((letter, index) => {
                     if (index < virtualScroll) {
-                        letter.style.color = '#ffffff'; // Reveal letter
-                        letter.style.opacity = '1';     // Full opacity
+                        letter.style.color = '#ffffff';
+                        letter.style.opacity = '1';
                     } else {
-                        letter.style.color = 'grey';   // Default color
-                        letter.style.opacity = '0.2';  // Faint visibility
+                        letter.style.color = 'grey';
+                        letter.style.opacity = '0.2';
                     }
                 });
 
-                // If the text is fully revealed, allow normal scrolling behavior
                 if (virtualScroll >= totalLetters) {
-                    textRevealed = true; // Set flag
-                    window.removeEventListener('wheel', handleScroll); // Enable normal scrolling
+                    textRevealed = true;
+                    window.removeEventListener('wheel', handleScroll);
                 }
             }
         }
 
-        window.addEventListener('wheel', handleScroll, { passive: false }); // Add scroll handler
+        window.addEventListener('wheel', handleScroll, { passive: false });
 
-        // Particle background script
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         
@@ -523,7 +550,6 @@
                 this.x += this.speedX;
                 this.y += this.speedY;
 
-                // Wrap around edges
                 if (this.x > canvas.width) this.x = 0;
                 if (this.x < 0) this.x = canvas.width;
                 if (this.y > canvas.height) this.y = 0;
@@ -583,6 +609,52 @@
             canvas.height = window.innerHeight;
             init();
         });
+
+        // Data to be displayed in bubbles
+        const data = [
+            "Researcher at MIT (School of Engineering & Department of Chemistry)",
+            "CEO of 4 Startups",
+            "Board Member at KeelWorks Foundation",
+            "Bachelor of Science in Engineering from ASU",
+            "MIT Internship: Biocomputing & Modeling",
+            "Specialization in CRISPR Research",
+            "Founder of HelpingH Nonprofit"
+        ];
+
+        // Create floating bubbles with work and education info
+        function createBubble(content) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('floating-bubble');
+            bubble.innerHTML = `<p>${content}</p>`;
+
+            const xPos = Math.random() * window.innerWidth;
+            const yPos = Math.random() * window.innerHeight;
+
+            bubble.style.left = `${xPos}px`;
+            bubble.style.top = `${yPos}px`;
+
+            document.querySelector('.content-container').appendChild(bubble);
+
+            // Animation for opacity and movement effect
+            setTimeout(() => {
+                bubble.style.opacity = '1';
+                bubble.style.transform = 'scale(1)';
+            }, Math.random() * 500); // Delay for variation
+
+            // Remove bubble after floating for some time
+            setTimeout(() => {
+                bubble.remove();
+            }, 7000); // Duration of each bubble
+        }
+
+        // Trigger bubble creation as user scrolls
+        window.addEventListener('scroll', () => {
+            if (Math.random() < 0.05) { // 5% chance of showing new bubble per scroll
+                const randomIndex = Math.floor(Math.random() * data.length);
+                createBubble(data[randomIndex]);
+            }
+        });
     </script>
 </body>
 </html>
+
