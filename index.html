@@ -551,6 +551,8 @@
 </html>
 -->
 
+
+   
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -639,33 +641,31 @@
         let textRevealed = false; // Flag to check if the text is fully revealed
 
         // For smooth scrolling and letter reveal independently
-        window.addEventListener('wheel', (e) => {
-            e.preventDefault(); // Prevent the default scroll behavior
-
+        function handleScroll(e) {
             const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
-            virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
+            if (!textRevealed) {
+                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
 
-            // Reveal text letter by letter
-            letters.forEach((letter, index) => {
-                if (index < virtualScroll) {
-                    letter.style.color = '#ffffff'; // Reveal letter
-                    letter.style.opacity = '1';     // Full opacity
-                } else {
-                    letter.style.color = 'grey';   // Default color
-                    letter.style.opacity = '0.2';  // Faint visibility
+                // Reveal text letter by letter
+                letters.forEach((letter, index) => {
+                    if (index < virtualScroll) {
+                        letter.style.color = '#ffffff'; // Reveal letter
+                        letter.style.opacity = '1';     // Full opacity
+                    } else {
+                        letter.style.color = 'grey';   // Default color
+                        letter.style.opacity = '0.2';  // Faint visibility
+                    }
+                });
+
+                // If the text is fully revealed, allow normal scrolling behavior
+                if (virtualScroll >= totalLetters) {
+                    textRevealed = true; // Set flag
+                    window.removeEventListener('wheel', handleScroll); // Enable normal scrolling
                 }
-            });
-
-            // If the text is fully revealed, allow normal scrolling behavior
-            if (virtualScroll >= totalLetters && !textRevealed) {
-                textRevealed = true; // Set flag
-                enableNormalScroll(); // Enable regular scroll behavior
             }
-        }, { passive: false }); // Set passive: false to allow preventDefault()
-
-        function enableNormalScroll() {
-            window.removeEventListener('wheel', handleLetterScroll); // Remove letter scroll handler
         }
+
+        window.addEventListener('wheel', handleScroll, { passive: false }); // Add scroll handler
 
         // Particle background script
         const canvas = document.getElementById('particle-canvas');
