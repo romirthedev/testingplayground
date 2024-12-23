@@ -393,288 +393,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Letter-by-Letter Reveal</title>
+    <title>Journey Map</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: black;
-            color: grey;
-            height: 300vh; /* Simulated site height */
+            background-color: #111;
+            color: #e0e0e0;
             overflow-x: hidden;
+            height: 300vh;
         }
 
-        .container {
-            position: relative; /* Changed from fixed to relative */
-            margin: 20vh 5%; /* Creates spacing like before */
-            width: 90%;
-            z-index: 2;
-        }
-
-        .reveal-text {
-            font-size: 2rem;
-            line-height: 1.5;
-            letter-spacing: 0.1em;
-            color: grey;
-            white-space: pre-wrap;
-        }
-
-        .char {
-            color: grey;
-            opacity: 0.2; /* Default opacity for unrevealed letters */
-            transition: color 0.3s ease, opacity 0.3s ease;
-        }
-
-        #particle-canvas {
-            position: absolute; /* Changed from fixed to absolute */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh; /* Particle canvas now occupies only the viewport height */
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Modern Journey Map Styles */
-        .journey-map {
+        .journey-map-container {
             position: relative;
-            z-index: 3;
+            width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            background-color: #1c1c1c;
         }
 
-        .journey-steps {
-            position: absolute;
+        .journey-map {
+            position: relative;
             display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
+            align-items: center;
+            justify-content: space-between;
             width: 100%;
-            transform: translateY(50vh);
-            transition: transform 1s ease-out;
+            height: 100%;
+            z-index: 2;
+            transition: all 0.5s ease-in-out;
         }
 
-        .journey-step {
-            background-color: #292929;
-            color: #fff;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 8px;
-            text-align: center;
-            width: 150px;
-            opacity: 0;
-            transform: scale(0.8);
-            transition: opacity 0.3s ease, transform 0.3s ease;
+        .journey-node {
+            background-color: #00ff00;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            transition: all 0.5s ease;
         }
 
-        .journey-step h3 {
-            font-size: 1.2rem;
-            margin: 10px 0;
-        }
-
-        .journey-step p {
-            font-size: 1rem;
-        }
-
-        .journey-step:hover {
-            background-color: #4d4d4d;
-            cursor: pointer;
-        }
-
-        /* Active State */
-        .active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .dummy-content {
-            margin-top: 50vh;
+        .journey-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             font-size: 1.5rem;
-            color: white;
-            padding: 20px;
             text-align: center;
+            color: #ffffff;
+            max-width: 400px;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .journey-content.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* For the background animation */
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <canvas id="particle-canvas"></canvas>
 
-    <div class="container">
-        <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
-    </div>
+    <div class="particles-container"></div>
 
-    <div class="journey-map">
-        <div class="journey-steps">
-            <div class="journey-step">
-                <h3>MIT Researcher</h3>
-                <p>Worked on cutting-edge software for biocomputing & CRISPR projects.</p>
-            </div>
-            <div class="journey-step">
-                <h3>CEO x4</h3>
-                <p>Launched and led multiple startups focused on tech innovation and AI.</p>
-            </div>
-            <div class="journey-step">
-                <h3>ASU Researcher</h3>
-                <p>Contributed to motion capture and hardware integration at ASU's Mesquite Mocap project.</p>
-            </div>
-            <div class="journey-step">
-                <h3>Board Member</h3>
-                <p>Collaborated with global experts to drive initiatives at the KeelWorks Foundation.</p>
-            </div>
+    <div class="journey-map-container">
+        <div class="journey-map">
+            <div class="journey-node" id="node1"></div>
+            <div class="journey-node" id="node2"></div>
+            <div class="journey-node" id="node3"></div>
+            <div class="journey-node" id="node4"></div>
+        </div>
+
+        <div class="journey-content" id="content1">
+            <h2>Education: High School</h2>
+            <p>Graduated with honors, 1500 SAT, and a passion for research and development.</p>
+        </div>
+
+        <div class="journey-content" id="content2">
+            <h2>Experience: MIT Researcher</h2>
+            <p>Contributed to cutting-edge work in motion capture and CRISPR technologies.</p>
+        </div>
+
+        <div class="journey-content" id="content3">
+            <h2>Leadership: CEO</h2>
+            <p>Led three startups in diverse fields, driving innovation and growth.</p>
+        </div>
+
+        <div class="journey-content" id="content4">
+            <h2>Board Member</h2>
+            <p>Joined the board of the KeelWorks Foundation, advising on tech initiatives.</p>
         </div>
     </div>
 
-    <div class="dummy-content">
-        <p>Scroll further to see the effect in action! This content appears after the text reveal animation.</p>
-        <p>Keep scrolling to test the page scroll behavior.</p>
-    </div>
-
     <script>
-        const revealText = document.getElementById('text');
-        const letters = Array.from(revealText.textContent).map(char => {
-            const span = document.createElement('span');
-            span.textContent = char;
-            span.classList.add('char');
-            return span;
-        });
+        // Initialize variables
+        const journeyNodes = document.querySelectorAll('.journey-node');
+        const journeyContents = document.querySelectorAll('.journey-content');
+        let currentScrollPosition = 0;
+        let scrollHeight = document.documentElement.scrollHeight;
 
-        revealText.textContent = '';
-        letters.forEach(letter => revealText.appendChild(letter));
-
-        let virtualScroll = 0; // Tracks letter reveal progress
-        let totalLetters = letters.length;
-        let textRevealed = false; // Flag to check if the text is fully revealed
-
-        function handleScroll(e) {
-            const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
-            if (!textRevealed) {
-                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
-
-                // Reveal text letter by letter
-                letters.forEach((letter, index) => {
-                    if (index < virtualScroll) {
-                        letter.style.color = '#ffffff'; // Reveal letter
-                        letter.style.opacity = '1';     // Full opacity
-                    } else {
-                        letter.style.color = 'grey';   // Default color
-                        letter.style.opacity = '0.2';  // Faint visibility
-                    }
-                });
-
-                // If the text is fully revealed, allow normal scrolling behavior
-                if (virtualScroll >= totalLetters) {
-                    textRevealed = true; // Set flag
-                    window.removeEventListener('wheel', handleScroll); // Enable normal scrolling
+        // Function to update the position of the journey nodes
+        function updateJourneyNodes() {
+            let scrollPercentage = (currentScrollPosition / scrollHeight);
+            journeyNodes.forEach((node, index) => {
+                let nodePosition = (scrollPercentage * 100) + (index * 25);
+                node.style.left = `calc(${nodePosition}% - 10px)`;
+                node.style.top = `${50 + Math.sin(nodePosition / 10) * 20}%`;
+                if (scrollPercentage > (index + 1) / 4) {
+                    journeyContents[index].classList.add('active');
+                } else {
+                    journeyContents[index].classList.remove('active');
                 }
-            }
-
-            // Trigger the steps animation as the user scrolls
-            if (textRevealed) {
-                const steps = document.querySelectorAll('.journey-step');
-                let revealIndex = Math.floor(virtualScroll / (totalLetters / steps.length));
-                steps.forEach((step, index) => {
-                    if (index <= revealIndex) {
-                        step.classList.add('active');
-                    } else {
-                        step.classList.remove('active');
-                    }
-                });
-            }
+            });
         }
 
-        window.addEventListener('wheel', handleScroll, { passive: false }); // Add scroll handler
-
-        // Particle background script
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        
+        // Particle animation background
+        const particlesContainer = document.querySelector('.particles-container');
         let particles = [];
-        const colors = ['#ffffff', '#aaaaaa', '#888888'];
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 5 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                // Wrap around edges
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
+        for (let i = 0; i < 100; i++) {
+            let particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.width = '5px';
+            particle.style.height = '5px';
+            particle.style.borderRadius = '50%';
+            particle.style.backgroundColor = '#ffffff';
+            particle.style.opacity = Math.random();
+            particlesContainer.appendChild(particle);
+            particles.push(particle);
         }
 
-        function init() {
-            particles = [];
-            for (let i = 0; i < 200; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function handleParticles() {
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-            
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 50) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = particles[i].color;
-                        ctx.lineWidth = 0.2;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
+        // Function to animate particles
         function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            handleParticles();
-            requestAnimationFrame(animateParticles);
+            particles.forEach(particle => {
+                let randomX = Math.random() * window.innerWidth;
+                let randomY = Math.random() * window.innerHeight;
+                particle.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            });
         }
 
-        init();
-        animateParticles();
-
-        // Adjust canvas size when window is resized
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        // Scroll event listener
+        window.addEventListener('scroll', () => {
+            currentScrollPosition = window.scrollY;
+            updateJourneyNodes();
         });
+
+        // Animate particles every 3 seconds
+        setInterval(animateParticles, 3000);
+
     </script>
+
 </body>
 </html>
+
 
 
 
