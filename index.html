@@ -406,8 +406,8 @@
         }
 
         .container {
-            position: relative;
-            margin: 20vh 5%;
+            position: relative; /* Changed from fixed to relative */
+            margin: 20vh 5%; /* Creates spacing like before */
             width: 90%;
             z-index: 2;
         }
@@ -422,18 +422,73 @@
 
         .char {
             color: grey;
-            opacity: 0.2;
+            opacity: 0.2; /* Default opacity for unrevealed letters */
             transition: color 0.3s ease, opacity 0.3s ease;
         }
 
         #particle-canvas {
-            position: absolute;
+            position: absolute; /* Changed from fixed to absolute */
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh;
+            height: 100vh; /* Particle canvas now occupies only the viewport height */
             z-index: 1;
             pointer-events: none;
+        }
+
+        /* Modern Journey Map Styles */
+        .journey-map {
+            position: relative;
+            z-index: 3;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: #1c1c1c;
+        }
+
+        .journey-steps {
+            position: absolute;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            width: 100%;
+            transform: translateY(50vh);
+            transition: transform 1s ease-out;
+        }
+
+        .journey-step {
+            background-color: #292929;
+            color: #fff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            text-align: center;
+            width: 150px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .journey-step h3 {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .journey-step p {
+            font-size: 1rem;
+        }
+
+        .journey-step:hover {
+            background-color: #4d4d4d;
+            cursor: pointer;
+        }
+
+        /* Active State */
+        .active {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .dummy-content {
@@ -442,57 +497,6 @@
             color: white;
             padding: 20px;
             text-align: center;
-        }
-
-        /* Journey Map Styles */
-        .journey-map {
-            margin-top: 20vh;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .step {
-            background-color: #333;
-            border-radius: 10px;
-            margin: 20px 0;
-            padding: 20px;
-            position: relative;
-            opacity: 0;
-            transform: translateX(-100%);
-            animation: slideIn 1s forwards;
-        }
-
-        .step h2 {
-            color: #f4a261;
-            font-size: 1.8rem;
-        }
-
-        .step p {
-            color: #fff;
-            font-size: 1.2rem;
-        }
-
-        .step:before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: -15px;
-            width: 10px;
-            height: 10px;
-            background-color: #f4a261;
-            border-radius: 50%;
-            transform: translateY(-50%);
-        }
-
-        @keyframes slideIn {
-            0% {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
     </style>
 </head>
@@ -503,37 +507,30 @@
         <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
     </div>
 
+    <div class="journey-map">
+        <div class="journey-steps">
+            <div class="journey-step">
+                <h3>MIT Researcher</h3>
+                <p>Worked on cutting-edge software for biocomputing & CRISPR projects.</p>
+            </div>
+            <div class="journey-step">
+                <h3>CEO x4</h3>
+                <p>Launched and led multiple startups focused on tech innovation and AI.</p>
+            </div>
+            <div class="journey-step">
+                <h3>ASU Researcher</h3>
+                <p>Contributed to motion capture and hardware integration at ASU's Mesquite Mocap project.</p>
+            </div>
+            <div class="journey-step">
+                <h3>Board Member</h3>
+                <p>Collaborated with global experts to drive initiatives at the KeelWorks Foundation.</p>
+            </div>
+        </div>
+    </div>
+
     <div class="dummy-content">
         <p>Scroll further to see the effect in action! This content appears after the text reveal animation.</p>
         <p>Keep scrolling to test the page scroll behavior.</p>
-    </div>
-
-    <!-- Journey Map Section -->
-    <div class="journey-map">
-        <div class="step" style="animation-delay: 0.5s;">
-            <h2>Education: Bachelor of Science in Computer Science</h2>
-            <p>Graduated with honors from MIT in 2023, specializing in AI and machine learning. Participated in research focusing on computational modeling in bioinformatics.</p>
-        </div>
-        <div class="step" style="animation-delay: 1s;">
-            <h2>Research Experience: MIT - School of Engineering</h2>
-            <p>Worked as a research assistant developing CRISPR-based computational models to optimize gene-editing techniques for cancer treatment.</p>
-        </div>
-        <div class="step" style="animation-delay: 1.5s;">
-            <h2>CEO: HelpingH Nonprofit</h2>
-            <p>Founded and led HelpingH, a nonprofit dedicated to helping individuals without degrees find meaningful employment opportunities in the tech industry.</p>
-        </div>
-        <div class="step" style="animation-delay: 2s;">
-            <h2>Education: Master's in Bioinformatics</h2>
-            <p>Pursued a Master's in Bioinformatics at ASU, focusing on machine learning algorithms to accelerate drug discovery and optimize CRISPR technologies.</p>
-        </div>
-        <div class="step" style="animation-delay: 2.5s;">
-            <h2>Research Internship: ASU - Mesquite Mocap Project</h2>
-            <p>Collaborated on the development of motion capture software and hardware integration, including documenting and contributing to a published research paper on the project.</p>
-        </div>
-        <div class="step" style="animation-delay: 3s;">
-            <h2>Board Member: KeelWorks Foundation</h2>
-            <p>As a board member, I contribute to initiatives aimed at fostering technology-based education for underprivileged communities worldwide.</p>
-        </div>
     </div>
 
     <script>
@@ -573,6 +570,19 @@
                     textRevealed = true; // Set flag
                     window.removeEventListener('wheel', handleScroll); // Enable normal scrolling
                 }
+            }
+
+            // Trigger the steps animation as the user scrolls
+            if (textRevealed) {
+                const steps = document.querySelectorAll('.journey-step');
+                let revealIndex = Math.floor(virtualScroll / (totalLetters / steps.length));
+                steps.forEach((step, index) => {
+                    if (index <= revealIndex) {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active');
+                    }
+                });
             }
         }
 
@@ -632,33 +642,40 @@
 
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
+            
                     const dy = particles[i].y - particles[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
 
-                    if (distance < 100) {
+                    if (distance < 50) {
                         ctx.beginPath();
                         ctx.strokeStyle = particles[i].color;
                         ctx.lineWidth = 0.2;
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
                         ctx.stroke();
-                        ctx.closePath();
                     }
                 }
             }
         }
 
-        function animate() {
+        function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             handleParticles();
-            requestAnimationFrame(animate);
+            requestAnimationFrame(animateParticles);
         }
 
         init();
-        animate();
+        animateParticles();
+
+        // Adjust canvas size when window is resized
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
+
 
 
 
