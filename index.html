@@ -393,222 +393,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Timeline with Tech Aesthetics</title>
+    <title>Glassmorphism Resume</title>
     <style>
+        /* Reset margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Arial', sans-serif;
-            background-color: #1d1d1d;
-            color: #ddd;
-            overflow-x: hidden;
+            background: url('https://via.placeholder.com/1500') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
         }
 
-        h1 {
-            text-align: center;
-            font-size: 3rem;
-            margin-top: 5rem;
-            color: #f1f1f1;
-        }
-
+        /* Glassmorphism card style */
         .container {
-            position: relative;
-            padding: 50px;
-            z-index: 2;
-        }
-
-        /* Timeline styles */
-        .timeline {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            position: relative;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
         }
 
-        .timeline::after {
-            content: '';
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .glass-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .experience-item, .education-item {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .experience-item:last-child, .education-item:last-child {
+            border-bottom: none;
+        }
+
+        .job-title, .degree-title {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .company, .university {
+            font-style: italic;
+            color: #bbb;
+        }
+
+        .duration {
+            color: #88c0d0;
+            font-size: 0.9rem;
+        }
+
+        .description {
+            font-size: 1rem;
+            color: #d1d1d1;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 1rem;
+            color: #bbb;
+        }
+
+        /* Particle Effect */
+        #particles-js {
             position: absolute;
             top: 0;
-            left: 50%;
-            width: 2px;
-            height: 100%;
-            background-color: #888;
-            transform: translateX(-50%);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin: 30px 0;
-            width: 80%;
-            display: flex;
-            justify-content: flex-start;
-            animation: fadeInUp 1s ease-in-out forwards;
-        }
-
-        .timeline-item-left {
             left: 0;
-            transform: translateX(-100px);
-            animation: slideInLeft 1.5s ease-in-out forwards;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 1;
         }
 
-        .timeline-item-right {
-            right: 0;
-            transform: translateX(100px);
-            animation: slideInRight 1.5s ease-in-out forwards;
-        }
-
-        .timeline-item h2 {
-            color: #fff;
-            font-size: 1.8rem;
-            margin: 0;
-        }
-
-        .timeline-item p {
-            color: #bbb;
-            font-size: 1.2rem;
-            margin: 5px 0;
-        }
-
-        .timeline-item .dot {
+        /* Scrolling Text Styling */
+        .scrolling-text {
             position: absolute;
-            top: 20px;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background-color: #f1f1f1;
-            border-radius: 50%;
-            border: 2px solid #333;
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
-        }
-
-        .timeline-item-left .dot {
-            left: -50%;
-        }
-
-        .timeline-item-right .dot {
-            left: 50%;
-        }
-
-        .showcase {
-            text-align: center;
-            color: white;
-            font-size: 1.2rem;
-            margin-top: 20vh;
-            z-index: 1;
-            width: 100%;
-        }
-
-        .showcase h1 {
-            font-size: 3rem;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: #fff;
-            margin-bottom: 20px;
+            white-space: nowrap;
+            animation: scrollText 20s linear infinite;
         }
 
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
+        @keyframes scrollText {
+            from {
+                transform: translateX(100%);
             }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInLeft {
-            0% {
-                opacity: 0;
-                transform: translateX(-100px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
+            to {
+                transform: translateX(-100%);
             }
         }
 
-        @keyframes slideInRight {
-            0% {
-                opacity: 0;
-                transform: translateX(100px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Hover Effects */
-        .timeline-item:hover {
-            background-color: #333;
-            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .timeline-item p:hover {
-            color: #f1f1f1;
-            transition: color 0.3s;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .timeline-item {
-                width: 95%;
-            }
-        }
     </style>
 </head>
 <body>
-    <h1>My Journey: Education & Work</h1>
 
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Scrolling Text -->
+    <div class="scrolling-text">Thank you to Azure, AWS, and Google for supporting innovation in tech!</div>
+
+    <!-- Main Content -->
     <div class="container">
-        <div class="showcase">
-            <h1>Experience & Education Timeline</h1>
+        <!-- Work Experience Section -->
+        <div class="glass-card">
+            <div class="section-title">Work Experience</div>
+            <div class="experience-item">
+                <div class="job-title">Software Engineer Intern</div>
+                <div class="company">Tech Innovators LLC</div>
+                <div class="duration">June 2023 - August 2023</div>
+                <div class="description">
+                    Developed innovative software tools to improve data visualization processes, reducing task time by 20%.
+                </div>
+            </div>
+            <div class="experience-item">
+                <div class="job-title">Junior Developer</div>
+                <div class="company">Creative Solutions Inc.</div>
+                <div class="duration">September 2022 - May 2023</div>
+                <div class="description">
+                    Assisted in designing and building scalable web applications for e-commerce clients.
+                </div>
+            </div>
         </div>
 
-        <div class="timeline">
-            <!-- Timeline Item 1: Education -->
-            <div class="timeline-item timeline-item-left">
-                <div class="dot"></div>
-                <div class="content">
-                    <h2>Education</h2>
-                    <p><strong>2024 - Present:</strong> PhD Candidate in Biochemical Engineering, MIT</p>
-                    <p><strong>2020 - 2024:</strong> B.S. in Chemical Engineering, Arizona State University</p>
-                    <p><strong>2016 - 2020:</strong> High School, Gilbert High School, Arizona</p>
+        <!-- Education Section -->
+        <div class="glass-card">
+            <div class="section-title">Education</div>
+            <div class="education-item">
+                <div class="degree-title">B.S. in Computer Science</div>
+                <div class="university">Massachusetts Institute of Technology (MIT)</div>
+                <div class="duration">September 2024 - Expected May 2028</div>
+                <div class="description">
+                    Specialized in AI, Machine Learning, and Data Structures with a focus on computational biology.
                 </div>
             </div>
-
-            <!-- Timeline Item 2: Work Experience -->
-            <div class="timeline-item timeline-item-right">
-                <div class="dot"></div>
-                <div class="content">
-                    <h2>Work Experience</h2>
-                    <p><strong>2023 - Present:</strong> Research Scientist, MIT Department of Engineering</p>
-                    <p><strong>2022 - 2023:</strong> CTO & Founder, NexGen Biotech</p>
-                    <p><strong>2020 - 2022:</strong> CEO & Co-Founder, BiomeTech</p>
-                    <p><strong>2019 - 2020:</strong> Intern, NASA Jet Propulsion Laboratory</p>
-                </div>
-            </div>
-
-            <!-- Timeline Item 3: Leadership & Contributions -->
-            <div class="timeline-item timeline-item-left">
-                <div class="dot"></div>
-                <div class="content">
-                    <h2>Leadership & Contributions</h2>
-                    <p><strong>2021 - Present:</strong> Board Member, KeelWorks Foundation</p>
-                    <p><strong>2019 - 2020:</strong> Debate Captain, Gilbert High School Debate Team</p>
-                    <p><strong>2018 - 2020:</strong> Founder, HelpingH Nonprofit Organization</p>
+            <div class="education-item">
+                <div class="degree-title">High School Diploma</div>
+                <div class="university">Gilbert High School</div>
+                <div class="duration">Graduated 2024</div>
+                <div class="description">
+                    Focused on advanced mathematics, programming, and research, winning awards in competitive programming.
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <div class="footer">
+        Made with ❤️ by [Your Name]
+    </div>
+
+    <!-- Particles.js Script -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#ffffff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "repulse"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+
 </body>
 </html>
+
 
 
 
