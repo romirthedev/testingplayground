@@ -84,25 +84,62 @@ document.addEventListener('DOMContentLoaded', function() {
         init();
     });
 });
-// Assuming you are using the same setup with the text color transitioning from grey to white
-const textElement = document.querySelector('.text-element');  // Replace with your text selector
+document.addEventListener("DOMContentLoaded", () => {
+    const revealText = document.getElementById('text');
+    const letters = Array.from(revealText.textContent).map(char => {
+        const span = document.createElement('span');
+        span.textContent = char;
+        span.classList.add('char');
+        return span;
+    });
 
-textElement.addEventListener('transitionend', (event) => {
-    if (event.propertyName === 'color') {  // Ensure the event is related to the 'color' transition
-        // Allow the scroll to happen after the transition is complete
-        enableScroll();  // Replace with the function that allows scrolling
+    revealText.textContent = '';
+    letters.forEach(letter => revealText.appendChild(letter));
+
+    let virtualScroll = 0;
+    const totalLetters = letters.length;
+    let textRevealed = false;
+
+    // Disable scrolling until text is fully revealed
+    function disableScroll() {
+        document.body.style.overflow = 'hidden';
     }
+
+    // Enable scrolling after the color transition is complete
+    function enableScroll() {
+        document.body.style.overflow = 'auto';
+    }
+
+    // Track the completion of the color transition
+    revealText.addEventListener('transitionend', (event) => {
+        if (event.propertyName === 'color' && virtualScroll >= totalLetters) {
+            enableScroll();  // Enable scroll only after text is fully white
+        }
+    });
+
+    // Scroll event listener for letter reveal
+    window.addEventListener('wheel', (e) => {
+        e.preventDefault(); // Prevent default scroll
+
+        const delta = e.deltaY > 0 ? 5 : -5;
+        virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters));
+
+        letters.forEach((letter, index) => {
+            if (index < virtualScroll) {
+                letter.style.color = '#ffffff'; // Reveal letter
+                letter.style.opacity = '1';
+            } else {
+                letter.style.color = 'grey';
+                letter.style.opacity = '0.2';
+            }
+        });
+
+        // When all text is revealed, allow normal scroll
+        if (virtualScroll >= totalLetters && !textRevealed) {
+            textRevealed = true;
+            enableScroll();  // Enable regular scrolling once the text is fully revealed
+        }
+    }, { passive: false });  // passive: false to allow preventDefault()
+
+    disableScroll();  // Initially disable scrolling
 });
-
-// Disable scrolling initially
-function disableScroll() {
-    document.body.style.overflow = 'hidden';
-}
-
-// Enable scrolling after the color transition is complete
-function enableScroll() {
-    document.body.style.overflow = 'auto';  // Allow normal scrolling
-}
-
-// Disable scrolling until the transition ends
-disableScroll();
