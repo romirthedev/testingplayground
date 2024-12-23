@@ -664,25 +664,7 @@
         }, { passive: false }); // Set passive: false to allow preventDefault()
 
         function enableNormalScroll() {
-            // Allow the page to scroll naturally after the text is fully revealed
-            window.addEventListener('wheel', handlePageScroll, { passive: true });
-        }
-
-        function handlePageScroll(e) {
-            // Reverse the scroll direction after the text is revealed
-            const scrollSpeed = 0.3;
-            const moveAmount = e.deltaY * scrollSpeed;
-
-            // Apply the scrolling effect to both particles and text container
-            const particlesContainer = document.getElementById('particle-canvas');
-            const textContainer = document.querySelector('.container');
-
-            // Update the position to move up (negative value for upward movement)
-            const currentYText = parseFloat(window.getComputedStyle(textContainer).top);
-            const currentYParticles = parseFloat(window.getComputedStyle(particlesContainer).top);
-
-            textContainer.style.top = `${currentYText - moveAmount}px`; // Move text up
-            particlesContainer.style.top = `${currentYParticles - moveAmount}px`; // Move particles up
+            window.removeEventListener('wheel', handleLetterScroll); // Remove letter scroll handler
         }
 
         // Particle background script
@@ -772,4 +754,3 @@
     </script>
 </body>
 </html>
-
