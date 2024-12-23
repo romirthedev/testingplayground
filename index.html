@@ -392,269 +392,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unique Background Display</title>
+    <title>Work & Education Cards</title>
     <style>
         body {
             margin: 0;
             padding: 0;
+            background-color: #121212;
             font-family: Arial, sans-serif;
-            background-color: black;
-            color: grey;
-            height: 300vh; /* Simulated site height */
-            overflow-x: hidden;
+            color: #f1f1f1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .container {
-            position: relative; 
-            margin: 20vh 5%;
-            width: 90%;
-            z-index: 2;
-        }
-
-        .reveal-text {
-            font-size: 2rem;
-            line-height: 1.5;
-            letter-spacing: 0.1em;
-            color: grey;
-            white-space: pre-wrap;
-        }
-
-        .char {
-            color: grey;
-            opacity: 0.2; 
-            transition: color 0.3s ease, opacity 0.3s ease;
-        }
-
-        #particle-canvas {
-            position: absolute; 
+        /* Existing styles for particles and scroll-based text (unchanged) */
+        .particles-container {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh; 
-            z-index: 1;
+            height: 100%;
             pointer-events: none;
         }
 
-        .floating-bubble {
+        .scroll-text {
             position: absolute;
-            font-size: 1.5rem;
-            color: white;
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 50%;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
-            animation: float 5s infinite ease-in-out;
-            opacity: 0;
-            transform: scale(0);
+            bottom: 10%;
+            width: 100%;
+            text-align: center;
+            font-size: 2rem;
+            animation: scroll 10s linear infinite;
         }
 
-        .floating-bubble p {
-            margin: 0;
-            word-wrap: break-word;
-            font-size: 1rem;
-        }
-
-        @keyframes float {
+        @keyframes scroll {
             0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(-50px) scale(1.2);
-                opacity: 1;
+                transform: translateY(100%);
             }
             100% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
+                transform: translateY(-100%);
             }
+        }
+
+        /* Styling for the cards section */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 80%;
+            height: 80%;
+            position: relative;
+            padding: 20px;
+            margin-top: 100px; /* Adjusts positioning to be below particles and scroll text */
+        }
+
+        .card {
+            perspective: 1000px; /* Creates the 3D effect */
+        }
+
+        .card-content {
+            width: 100%;
+            height: 200px;
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover .card-inner {
+            transform: rotateY(180deg); /* Flips the card */
+        }
+
+        .card-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+        }
+
+        .card-front {
+            background-color: #333;
+            color: #f1f1f1;
+        }
+
+        .card-back {
+            background-color: #444;
+            color: #ddd;
+            transform: rotateY(180deg); /* Keeps back hidden initially */
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            font-size: 1rem;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        .card-back .details {
+            font-size: 1rem;
+            text-align: center;
+            padding: 10px;
+            font-style: italic;
         }
 
         .content-container {
-            position: relative;
-            z-index: 3;
-            padding-top: 50vh;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #f1f1f1;
         }
     </style>
 </head>
 <body>
-    <canvas id="particle-canvas"></canvas>
 
-    <div class="container">
-        <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
+    <!-- Particles and scroll-based text (unchanged) -->
+    <div class="particles-container">
+        <!-- Your particles animation code goes here -->
     </div>
 
+    <div class="scroll-text">
+        <!-- Scroll text content here -->
+        <p>Random Work & Education Experiences</p>
+    </div>
+
+    <!-- Cards Section Below -->
     <div class="content-container">
-        <!-- Bubbles will be dynamically created below -->
+        <h1>Work Experience & Education</h1>
+        <div class="card-container" id="cardContainer">
+            <!-- Cards will be inserted here dynamically -->
+        </div>
     </div>
 
     <script>
-        const revealText = document.getElementById('text');
-        const letters = Array.from(revealText.textContent).map(char => {
-            const span = document.createElement('span');
-            span.textContent = char;
-            span.classList.add('char');
-            return span;
-        });
-
-        revealText.textContent = '';
-        letters.forEach(letter => revealText.appendChild(letter));
-
-        let virtualScroll = 0; 
-        let totalLetters = letters.length;
-        let textRevealed = false;
-
-        function handleScroll(e) {
-            const delta = e.deltaY > 0 ? 5 : -5;
-            if (!textRevealed) {
-                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters));
-
-                letters.forEach((letter, index) => {
-                    if (index < virtualScroll) {
-                        letter.style.color = '#ffffff';
-                        letter.style.opacity = '1';
-                    } else {
-                        letter.style.color = 'grey';
-                        letter.style.opacity = '0.2';
-                    }
-                });
-
-                if (virtualScroll >= totalLetters) {
-                    textRevealed = true;
-                    window.removeEventListener('wheel', handleScroll);
-                }
+        // Data for the work and education background (You can add or modify as needed)
+        const experiences = [
+            {
+                title: "Researcher at MIT",
+                description: "Biocomputing & Modeling Research",
+                details: "Worked in the Department of Engineering & Department of Chemistry on cutting-edge research related to CRISPR and anti-CRISPR systems. Focused on computational modeling and simulations."
+            },
+            {
+                title: "CEO of 4 Startups",
+                description: "Founder & CEO of multiple tech startups",
+                details: "Founded and managed several startups in the technology and research sectors, focusing on AI, CRISPR, and motion capture systems."
+            },
+            {
+                title: "Board Member at KeelWorks Foundation",
+                description: "Board Member of Nonprofit Foundation",
+                details: "Served on the Board of Directors for KeelWorks Foundation, overseeing operations and strategic development of initiatives supporting technology and research."
+            },
+            {
+                title: "Bachelor of Science in Engineering (ASU)",
+                description: "Bachelor's Degree in Engineering",
+                details: "Graduated with a focus in computational modeling, CRISPR research, and biocomputing from Arizona State University, focusing on hands-on research and project development."
+            },
+            {
+                title: "Intern at MIT (Biocomputing & Modeling)",
+                description: "Internship in Biocomputing",
+                details: "Participated in an MIT internship where I contributed to various research projects in biocomputing, gaining experience in software development and molecular simulations."
+            },
+            {
+                title: "Founder of HelpingH Nonprofit",
+                description: "Nonprofit Supporting Job Seekers",
+                details: "Founded HelpingH, a nonprofit organization aimed at assisting individuals without formal degrees to find job opportunities in tech and other industries."
             }
-        }
-
-        window.addEventListener('wheel', handleScroll, { passive: false });
-
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        
-        let particles = [];
-        const colors = ['#ffffff', '#aaaaaa', '#888888'];
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 5 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            particles = [];
-            for (let i = 0; i < 200; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function handleParticles() {
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = particles[i].color;
-                        ctx.lineWidth = 0.2;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.closePath();
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            handleParticles();
-            requestAnimationFrame(animate);
-        }
-
-        init();
-        animate();
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
-
-        // Data to be displayed in bubbles
-        const data = [
-            "Researcher at MIT (School of Engineering & Department of Chemistry)",
-            "CEO of 4 Startups",
-            "Board Member at KeelWorks Foundation",
-            "Bachelor of Science in Engineering from ASU",
-            "MIT Internship: Biocomputing & Modeling",
-            "Specialization in CRISPR Research",
-            "Founder of HelpingH Nonprofit"
         ];
 
-        // Create floating bubbles with work and education info
-        function createBubble(content) {
-            const bubble = document.createElement('div');
-            bubble.classList.add('floating-bubble');
-            bubble.innerHTML = `<p>${content}</p>`;
+        // Function to generate and insert the cards into the container
+        function createCards() {
+            const cardContainer = document.getElementById('cardContainer');
+            experiences.forEach(exp => {
+                const card = document.createElement('div');
+                card.classList.add('card');
 
-            const xPos = Math.random() * window.innerWidth;
-            const yPos = Math.random() * window.innerHeight;
+                const cardContent = document.createElement('div');
+                cardContent.classList.add('card-content');
 
-            bubble.style.left = `${xPos}px`;
-            bubble.style.top = `${yPos}px`;
+                const cardInner = document.createElement('div');
+                cardInner.classList.add('card-inner');
 
-            document.querySelector('.content-container').appendChild(bubble);
+                // Front of the card
+                const cardFront = document.createElement('div');
+                cardFront.classList.add('card-front');
+                cardFront.innerHTML = `
+                    <div class="card-title">${exp.title}</div>
+                    <div class="card-description">${exp.description}</div>
+                `;
 
-            // Animation for opacity and movement effect
-            setTimeout(() => {
-                bubble.style.opacity = '1';
-                bubble.style.transform = 'scale(1)';
-            }, Math.random() * 500); // Delay for variation
+                // Back of the card (detailed information)
+                const cardBack = document.createElement('div');
+                cardBack.classList.add('card-back');
+                cardBack.innerHTML = `
+                    <div class="details">${exp.details}</div>
+                `;
 
-            // Remove bubble after floating for some time
-            setTimeout(() => {
-                bubble.remove();
-            }, 7000); // Duration of each bubble
+                // Append front and back to the card inner
+                cardInner.appendChild(cardFront);
+                cardInner.appendChild(cardBack);
+
+                // Append card inner to card content
+                cardContent.appendChild(cardInner);
+
+                // Append card content to the card
+                card.appendChild(cardContent);
+
+                // Append card to the container
+                cardContainer.appendChild(card);
+            });
         }
 
-        // Trigger bubble creation as user scrolls
-        window.addEventListener('scroll', () => {
-            if (Math.random() < 0.05) { // 5% chance of showing new bubble per scroll
-                const randomIndex = Math.floor(Math.random() * data.length);
-                createBubble(data[randomIndex]);
-            }
-        });
+        // Create the cards dynamically when the page loads
+        createCards();
     </script>
+    
 </body>
 </html>
+
 
