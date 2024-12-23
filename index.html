@@ -551,8 +551,6 @@
 </html>
 -->
 
-
-   
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -568,16 +566,13 @@
             color: grey;
             height: 300vh; /* Simulated site height */
             overflow-x: hidden;
-            position: relative;
         }
 
         .container {
-            position: fixed;
-            top: 20%;
-            left: 5%;
+            position: relative; /* Changed from fixed to relative */
+            margin: 20vh 5%; /* Creates spacing like before */
             width: 90%;
             z-index: 2;
-            pointer-events: none; /* Disable interaction with text */
         }
 
         .reveal-text {
@@ -595,16 +590,17 @@
         }
 
         #particle-canvas {
-            position: fixed;
+            position: absolute; /* Changed from fixed to absolute */
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh; /* Particle canvas now occupies only the viewport height */
             z-index: 1;
+            pointer-events: none;
         }
 
         .dummy-content {
-            margin-top: 100vh; /* Adds content below the visible area */
+            margin-top: 50vh; /* Adjusted spacing */
             font-size: 1.5rem;
             color: white;
             padding: 20px;
@@ -613,11 +609,11 @@
     </style>
 </head>
 <body>
+    <canvas id="particle-canvas"></canvas>
+
     <div class="container">
         <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
     </div>
-
-    <canvas id="particle-canvas"></canvas>
 
     <div class="dummy-content">
         <p>Scroll further to see the effect in action! This content appears after the text reveal animation.</p>
@@ -640,7 +636,6 @@
         let totalLetters = letters.length;
         let textRevealed = false; // Flag to check if the text is fully revealed
 
-        // For smooth scrolling and letter reveal independently
         function handleScroll(e) {
             const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
             if (!textRevealed) {
@@ -754,3 +749,4 @@
     </script>
 </body>
 </html>
+
