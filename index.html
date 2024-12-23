@@ -393,272 +393,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glassmorphism Resume</title>
+    <title>Letter-by-Letter Reveal</title>
     <style>
-        /* Reset margins and padding */
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: grey;
+            height: 300vh; /* Simulated site height */
+            overflow-x: hidden;
         }
 
-        /* Body styling */
-        body {
-            font-family: 'Arial', sans-serif;
-            background: url('https://via.placeholder.com/1500') no-repeat center center fixed;
-            background-size: cover;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Glassmorphism card style */
         .container {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            max-width: 1200px;
-            width: 100%;
             position: relative;
-            z-index: 10;
+            margin: 20vh 5%;
+            width: 90%;
+            z-index: 2;
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease-in-out;
-        }
-
-        .glass-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .section-title {
+        .reveal-text {
             font-size: 2rem;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 15px;
+            line-height: 1.5;
+            letter-spacing: 0.1em;
+            color: grey;
+            white-space: pre-wrap;
         }
 
-        .experience-item, .education-item {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #e0e0e0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 15px;
-            margin-bottom: 15px;
+        .char {
+            color: grey;
+            opacity: 0.2;
+            transition: color 0.3s ease, opacity 0.3s ease;
         }
 
-        .experience-item:last-child, .education-item:last-child {
-            border-bottom: none;
-        }
-
-        .job-title, .degree-title {
-            font-weight: 600;
-            color: #fff;
-        }
-
-        .company, .university {
-            font-style: italic;
-            color: #bbb;
-        }
-
-        .duration {
-            color: #88c0d0;
-            font-size: 0.9rem;
-        }
-
-        .description {
-            font-size: 1rem;
-            color: #d1d1d1;
-        }
-
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 1rem;
-            color: #bbb;
-        }
-
-        /* Particle Effect */
-        #particles-js {
+        #particle-canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: transparent;
+            height: 100vh;
             z-index: 1;
+            pointer-events: none;
         }
 
-        /* Scrolling Text Styling */
-        .scrolling-text {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
+        .dummy-content {
+            margin-top: 50vh;
             font-size: 1.5rem;
-            font-weight: 700;
-            color: #fff;
-            white-space: nowrap;
-            animation: scrollText 20s linear infinite;
+            color: white;
+            padding: 20px;
+            text-align: center;
         }
 
-        @keyframes scrollText {
-            from {
-                transform: translateX(100%);
-            }
-            to {
+        /* Journey Map Styles */
+        .journey-map {
+            margin-top: 20vh;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .step {
+            background-color: #333;
+            border-radius: 10px;
+            margin: 20px 0;
+            padding: 20px;
+            position: relative;
+            opacity: 0;
+            transform: translateX(-100%);
+            animation: slideIn 1s forwards;
+        }
+
+        .step h2 {
+            color: #f4a261;
+            font-size: 1.8rem;
+        }
+
+        .step p {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .step:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -15px;
+            width: 10px;
+            height: 10px;
+            background-color: #f4a261;
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
                 transform: translateX(-100%);
             }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
-
     </style>
 </head>
 <body>
+    <canvas id="particle-canvas"></canvas>
 
-    <!-- Particles Background -->
-    <div id="particles-js"></div>
-
-    <!-- Scrolling Text -->
-    <div class="scrolling-text">Thank you to Azure, AWS, and Google for supporting innovation in tech!</div>
-
-    <!-- Main Content -->
     <div class="container">
-        <!-- Work Experience Section -->
-        <div class="glass-card">
-            <div class="section-title">Work Experience</div>
-            <div class="experience-item">
-                <div class="job-title">Software Engineer Intern</div>
-                <div class="company">Tech Innovators LLC</div>
-                <div class="duration">June 2023 - August 2023</div>
-                <div class="description">
-                    Developed innovative software tools to improve data visualization processes, reducing task time by 20%.
-                </div>
-            </div>
-            <div class="experience-item">
-                <div class="job-title">Junior Developer</div>
-                <div class="company">Creative Solutions Inc.</div>
-                <div class="duration">September 2022 - May 2023</div>
-                <div class="description">
-                    Assisted in designing and building scalable web applications for e-commerce clients.
-                </div>
-            </div>
-        </div>
+        <p class="reveal-text" id="text">Hello! My name is Romir. I'm a Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, and Board Member.</p>
+    </div>
 
-        <!-- Education Section -->
-        <div class="glass-card">
-            <div class="section-title">Education</div>
-            <div class="education-item">
-                <div class="degree-title">B.S. in Computer Science</div>
-                <div class="university">Massachusetts Institute of Technology (MIT)</div>
-                <div class="duration">September 2024 - Expected May 2028</div>
-                <div class="description">
-                    Specialized in AI, Machine Learning, and Data Structures with a focus on computational biology.
-                </div>
-            </div>
-            <div class="education-item">
-                <div class="degree-title">High School Diploma</div>
-                <div class="university">Gilbert High School</div>
-                <div class="duration">Graduated 2024</div>
-                <div class="description">
-                    Focused on advanced mathematics, programming, and research, winning awards in competitive programming.
-                </div>
-            </div>
+    <div class="dummy-content">
+        <p>Scroll further to see the effect in action! This content appears after the text reveal animation.</p>
+        <p>Keep scrolling to test the page scroll behavior.</p>
+    </div>
+
+    <!-- Journey Map Section -->
+    <div class="journey-map">
+        <div class="step" style="animation-delay: 0.5s;">
+            <h2>Education: Bachelor of Science in Computer Science</h2>
+            <p>Graduated with honors from MIT in 2023, specializing in AI and machine learning. Participated in research focusing on computational modeling in bioinformatics.</p>
+        </div>
+        <div class="step" style="animation-delay: 1s;">
+            <h2>Research Experience: MIT - School of Engineering</h2>
+            <p>Worked as a research assistant developing CRISPR-based computational models to optimize gene-editing techniques for cancer treatment.</p>
+        </div>
+        <div class="step" style="animation-delay: 1.5s;">
+            <h2>CEO: HelpingH Nonprofit</h2>
+            <p>Founded and led HelpingH, a nonprofit dedicated to helping individuals without degrees find meaningful employment opportunities in the tech industry.</p>
+        </div>
+        <div class="step" style="animation-delay: 2s;">
+            <h2>Education: Master's in Bioinformatics</h2>
+            <p>Pursued a Master's in Bioinformatics at ASU, focusing on machine learning algorithms to accelerate drug discovery and optimize CRISPR technologies.</p>
+        </div>
+        <div class="step" style="animation-delay: 2.5s;">
+            <h2>Research Internship: ASU - Mesquite Mocap Project</h2>
+            <p>Collaborated on the development of motion capture software and hardware integration, including documenting and contributing to a published research paper on the project.</p>
+        </div>
+        <div class="step" style="animation-delay: 3s;">
+            <h2>Board Member: KeelWorks Foundation</h2>
+            <p>As a board member, I contribute to initiatives aimed at fostering technology-based education for underprivileged communities worldwide.</p>
         </div>
     </div>
 
-    <!-- Footer -->
-    <div class="footer">
-        Made with ❤️ by [Your Name]
-    </div>
-
-    <!-- Particles.js Script -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        particlesJS('particles-js', {
-            particles: {
-                number: {
-                    value: 80,
-                    density: {
-                        enable: true,
-                        value_area: 800
-                    }
-                },
-                color: {
-                    value: "#ffffff"
-                },
-                shape: {
-                    type: "circle",
-                    stroke: {
-                        width: 0,
-                        color: "#000000"
-                    }
-                },
-                opacity: {
-                    value: 0.5,
-                    random: true,
-                    anim: {
-                        enable: true,
-                        speed: 1,
-                        opacity_min: 0.1,
-                        sync: false
-                    }
-                },
-                size: {
-                    value: 3,
-                    random: true,
-                    anim: {
-                        enable: false
-                    }
-                },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: "#ffffff",
-                    opacity: 0.4,
-                    width: 1
-                },
-                move: {
-                    enable: true,
-                    speed: 6,
-                    direction: "none",
-                    random: false,
-                    straight: false,
-                    out_mode: "out",
-                    bounce: false
-                }
-            },
-            interactivity: {
-                detect_on: "canvas",
-                events: {
-                    onhover: {
-                        enable: true,
-                        mode: "repulse"
-                    },
-                    onclick: {
-                        enable: true,
-                        mode: "push"
-                    }
-                }
-            },
-            retina_detect: true
+        const revealText = document.getElementById('text');
+        const letters = Array.from(revealText.textContent).map(char => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.classList.add('char');
+            return span;
         });
-    </script>
 
+        revealText.textContent = '';
+        letters.forEach(letter => revealText.appendChild(letter));
+
+        let virtualScroll = 0; // Tracks letter reveal progress
+        let totalLetters = letters.length;
+        let textRevealed = false; // Flag to check if the text is fully revealed
+
+        function handleScroll(e) {
+            const delta = e.deltaY > 0 ? 5 : -5; // Adjust scroll speed
+            if (!textRevealed) {
+                virtualScroll = Math.max(0, Math.min(virtualScroll + delta, totalLetters)); // Clamp value
+
+                // Reveal text letter by letter
+                letters.forEach((letter, index) => {
+                    if (index < virtualScroll) {
+                        letter.style.color = '#ffffff'; // Reveal letter
+                        letter.style.opacity = '1';     // Full opacity
+                    } else {
+                        letter.style.color = 'grey';   // Default color
+                        letter.style.opacity = '0.2';  // Faint visibility
+                    }
+                });
+
+                // If the text is fully revealed, allow normal scrolling behavior
+                if (virtualScroll >= totalLetters) {
+                    textRevealed = true; // Set flag
+                    window.removeEventListener('wheel', handleScroll); // Enable normal scrolling
+                }
+            }
+        }
+
+        window.addEventListener('wheel', handleScroll, { passive: false }); // Add scroll handler
+
+        // Particle background script
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let particles = [];
+        const colors = ['#ffffff', '#aaaaaa', '#888888'];
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 5 + 1;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Wrap around edges
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < 200; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = particles[i].color;
+                        ctx.lineWidth = 0.2;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
 </body>
 </html>
-
 
 
 
