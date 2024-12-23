@@ -84,3 +84,25 @@ document.addEventListener('DOMContentLoaded', function() {
         init();
     });
 });
+// Assuming you are using the same setup with the text color transitioning from grey to white
+const textElement = document.querySelector('.text-element');  // Replace with your text selector
+
+textElement.addEventListener('transitionend', (event) => {
+    if (event.propertyName === 'color') {  // Ensure the event is related to the 'color' transition
+        // Allow the scroll to happen after the transition is complete
+        enableScroll();  // Replace with the function that allows scrolling
+    }
+});
+
+// Disable scrolling initially
+function disableScroll() {
+    document.body.style.overflow = 'hidden';
+}
+
+// Enable scrolling after the color transition is complete
+function enableScroll() {
+    document.body.style.overflow = 'auto';  // Allow normal scrolling
+}
+
+// Disable scrolling until the transition ends
+disableScroll();
