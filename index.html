@@ -388,13 +388,12 @@
 </html>
 
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Letter-by-Letter Reveal with Cube</title>
+    <title>Letter-by-Letter Reveal</title>
     <style>
         body {
             margin: 0;
@@ -407,8 +406,8 @@
         }
 
         .container {
-            position: relative; /* Text content container */
-            margin: 20vh 5%; /* Creates spacing */
+            position: relative; /* Changed from fixed to relative */
+            margin: 20vh 5%; /* Creates spacing like before */
             width: 90%;
             z-index: 2;
         }
@@ -428,51 +427,13 @@
         }
 
         #particle-canvas {
-            position: fixed;
+            position: absolute; /* Changed from fixed to absolute */
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh;
+            height: 100vh; /* Particle canvas now occupies only the viewport height */
             z-index: 1;
             pointer-events: none;
-        }
-
-        .cube-container {
-            position: fixed;
-            bottom: 5%; /* Position the cube near the bottom */
-            left: 50%;
-            transform: translateX(-50%);
-            perspective: 1000px;
-            z-index: 0;
-        }
-
-        .cube {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            transform-style: preserve-3d;
-            animation: rotateCube 5s infinite linear;
-        }
-
-        .cube div {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            border: 1px solid grey;
-            box-sizing: border-box;
-        }
-
-        .front { transform: rotateY(0deg) translateZ(50px); }
-        .back { transform: rotateY(180deg) translateZ(50px); }
-        .right { transform: rotateY(90deg) translateZ(50px); }
-        .left { transform: rotateY(-90deg) translateZ(50px); }
-        .top { transform: rotateX(90deg) translateZ(50px); }
-        .bottom { transform: rotateX(-90deg) translateZ(50px); }
-
-        @keyframes rotateCube {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
         }
 
         .dummy-content {
@@ -494,18 +455,6 @@
     <div class="dummy-content">
         <p>Scroll further to see the effect in action! This content appears after the text reveal animation.</p>
         <p>Keep scrolling to test the page scroll behavior.</p>
-    </div>
-
-    <!-- 3D Cube -->
-    <div class="cube-container">
-        <div class="cube">
-            <div class="front"></div>
-            <div class="back"></div>
-            <div class="right"></div>
-            <div class="left"></div>
-            <div class="top"></div>
-            <div class="bottom"></div>
-        </div>
     </div>
 
     <script>
@@ -635,8 +584,27 @@
             init();
         });
     </script>
+<div class="hero-section">
+  <div class="centerpiece">
+    <h1>Hello! I'm Romir.</h1>
+    <p>
+      Researcher at MIT's School of Engineering & Department of Chemistry, ASU, 4x CEO, Board Member.
+    </p>
+    <div class="highlight-cards">
+      <div class="card">
+        <h3>🌟 Research</h3>
+        <p>MIT: AI, CRISPR Modeling, NIH-funded projects</p>
+      </div>
+      <div class="card">
+        <h3>🚀 Leadership</h3>
+        <p>4x CEO, Board Member at KeelWorks</p>
+      </div>
+      <div class="card">
+        <h3>🏆 Achievements</h3>
+        <p>Top 75 Global in Programming, FBLA State Winner</p>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
-
-
-
