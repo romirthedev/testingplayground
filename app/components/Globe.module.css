@@ -1,0 +1,23 @@
+.globeContainer {
+  width: 100%;
+  height: 400px;
+  margin: 2rem 0;
+}
+
+.error {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ff4444;
+  text-align: center;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .globeContainer {
+    height: 300px;
+  }
+}
+

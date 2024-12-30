@@ -1,0 +1,48 @@
+.skills {
+  background-color: #000;
+}
+
+.skills h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.skillsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.skillItem {
+  background-color: #111;
+  border-radius: 10px;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.skillItem h3 {
+  color: #8a2be2;
+  margin-bottom: 1rem;
+}
+
+.skillBar {
+  height: 10px;
+  background-color: #333;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.skillLevel {
+  height: 100%;
+  background-color: #8a2be2;
+}
+
+.skillPercentage {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
